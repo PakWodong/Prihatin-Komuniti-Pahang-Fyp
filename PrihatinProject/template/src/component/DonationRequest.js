@@ -18,32 +18,33 @@ function DonationRequest() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [description, setDescription] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleLoginError = (error) => {
         toast.error(
-          <div className="custom-toast">
-            <div className="custom-toast-icon" />
-            {error}
-          </div>,
-          {
-            className: 'custom-toast-container',
-             closeButton: false,
-          }
+            <div className="custom-toast">
+                <div className="custom-toast-icon" />
+                {error}
+            </div>,
+            {
+                className: 'custom-toast-container',
+                closeButton: false,
+            }
         );
-      };
+    };
 
-      const handleLoginSucess = (message) => {
+    const handleLoginSucess = (message) => {
         toast.success(
-          <div className="custom-toast">
-            <div className="custom-toast-icon" />
-            {message}
-          </div>,
-          {
-            className: 'custom-toast-container',
-             closeButton: false,
-          }
+            <div className="custom-toast">
+                <div className="custom-toast-icon" />
+                {message}
+            </div>,
+            {
+                className: 'custom-toast-container',
+                closeButton: false,
+            }
         );
-      };
+    };
 
     const handleRequestDonation = async (e) => {
         e.preventDefault();
@@ -64,6 +65,7 @@ function DonationRequest() {
         }
 
         try {
+            setIsLoading(true);
             const response = await axios.post(`${process.env.REACT_APP_API_URL}donation/request/`, { email, name, description });
 
             if (response.data.success) {
@@ -72,9 +74,11 @@ function DonationRequest() {
                     window.location.href = '/login'; // Redirect to home page
                 }, 3000);
             } else {
+                setIsLoading(false);
                 handleLoginError(response.data.error)
             }
         } catch (error) {
+            setIsLoading(false);
             handleLoginError('An error occured while request the donation. Please try again');
             console.error(error);
         }
@@ -82,6 +86,11 @@ function DonationRequest() {
 
     return (
         <div className="form-container" style={{ height: '100vh' }}>
+            {isLoading && (
+                <div className="m-loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <Box
@@ -151,8 +160,8 @@ function DonationRequest() {
                                 multiline
                                 rows={4}
                             />
-                            <Button type="submit" variant="contained" sx={{ width:"80%",mt: 2,p:1 }}className="authbutton">
-                                Request Donation
+                            <Button type="submit" disabled={isLoading} variant="contained" sx={{ width: "80%", mt: 2, p: 1 }} className="authbutton">
+                            {isLoading ? 'Processing...' : 'Request Donation'} 
                             </Button>
                         </Box>
                     </Paper>

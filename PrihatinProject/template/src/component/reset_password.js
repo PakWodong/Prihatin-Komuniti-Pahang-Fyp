@@ -19,6 +19,7 @@ function ResetPassword() {
   const { email } = useParams();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLoginError = (error) => {
     toast.error(
@@ -83,6 +84,7 @@ function ResetPassword() {
     }
 
     try {
+      setIsLoading(true);
       const response = await axios.post(`${process.env.REACT_APP_API_URL}resetpassword/`, { email, password });
       if (response.data.success) {
         handleLoginSucess(response.data.message)
@@ -90,9 +92,11 @@ function ResetPassword() {
           window.location.href = '/login'; // Redirect to login page
         }, 3000);
       } else {
+        setIsLoading(false);
         handleLoginError(response.data.error)
       }
     } catch (error) {
+      setIsLoading(false);
       handleLoginError('An error occured while reset your password. Please try again')
       console.error(error);
     }
@@ -101,6 +105,11 @@ function ResetPassword() {
 
   return (
     <div className="form-container" style={{ height: '100vh' }}>
+      {isLoading && (
+        <div className="m-loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box
@@ -160,8 +169,8 @@ function ResetPassword() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 sx={{ mb: 2, width: '80%' }}
               />
-              <Button type="submit" variant="contained" sx={{ width: '80%' }}className="authbutton">
-                Reset Password
+              <Button type="submit" disabled={isLoading} variant="contained" sx={{ width: '80%' }}className="authbutton">
+              {isLoading ? 'Processing...' : 'Reset Password'} 
               </Button>
             </Box>
           </Paper>

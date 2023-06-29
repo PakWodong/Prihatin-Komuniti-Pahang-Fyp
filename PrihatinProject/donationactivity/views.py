@@ -247,29 +247,16 @@ class VolunteerParticipantView(APIView):
             return Response({'success': False, 'error': 'An error occurred while updating Participation request'})
 
 class VolunteerParticipantManage(APIView):
-    def get(self, request):
-        activities = VolunteerActivity.objects.all()
-        activity_serializer = VolunteerActivitySerializer(
-            activities, many=True)
-        response_data = activity_serializer.data
-
-        for activity in response_data:
-            activity_id = activity['id']
-            participant = []
-            participants_count = VolunteerParticipant.objects.filter(
-                activity_id=activity_id).count()
-            activity['num_participants'] = participants_count
-            participant = VolunteerParticipant.objects.filter(
-                activity_id=activity_id)
-            participant_serializer = getVolunteerParticipantSerializer(
-                participant, many=True)
-            activity['participant'] = participant_serializer.data
-
-        response_data = [
-            activity for activity in response_data if activity['participant']]
-
-        return Response(response_data, status=200)
-
+    def get(self, request, param):
+        try:
+            activity = VolunteerActivity.objects.get(id=param)
+            
+            participants = VolunteerParticipant.objects.filter(activity=activity)
+            participants_serializer = getVolunteerParticipantSerializer(participants, many=True)
+            response_data = participants_serializer.data
+            return Response(response_data, status=200)
+        except VolunteerActivity.DoesNotExist:
+            return Response("Activity not found", status=404)
 
 class VolunteerRegisteredView(APIView):
     def get(self, request, param):

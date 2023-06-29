@@ -73,11 +73,7 @@ export function Navigation() {
               <Link to="/registeredEvent">
                 <span><FaTasks /></span> Registered Volunteer Event
               </Link>
-            </li><li>
-                  <Link to="/user">
-                    <span><FaRegUser /></span> User Profile
-                  </Link>
-                </li></>
+            </li></>
             )}
           </ul>
           <div className="sidebar-footer">

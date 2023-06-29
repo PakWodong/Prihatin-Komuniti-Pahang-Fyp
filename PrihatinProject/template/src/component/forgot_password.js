@@ -15,6 +15,7 @@ const theme = createTheme();
 
 function ForgotPasswordForm() {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const handleEmailChange = (event) => {
@@ -29,7 +30,7 @@ function ForgotPasswordForm() {
       </div>,
       {
         className: 'custom-toast-container',
-         closeButton: false,
+        closeButton: false,
       }
     );
   };
@@ -42,7 +43,7 @@ function ForgotPasswordForm() {
       </div>,
       {
         className: 'custom-toast-container',
-         closeButton: false,
+        closeButton: false,
       }
     );
   };
@@ -51,13 +52,19 @@ function ForgotPasswordForm() {
     event.preventDefault();
 
     try {
+      setIsLoading(true);
       const response = await axios.post(`${process.env.REACT_APP_API_URL}forgot_password/`, { email }, { withCredentials: true });
       if (response.data.success) {
-        handleLoginSucess(response.data.message) 
+        handleLoginSucess(response.data.message)
+        setTimeout(() => {
+          window.location.href = '/login'; // Redirect to home page
+      }, 3000);
       } else {
+        setIsLoading(false);
         handleLoginError(response.data.error);
       }
     } catch (error) {
+      setIsLoading(false);
       handleLoginError('An error occured while sending the reset password link to your email. Please try again')
       console.error(error);
     }
@@ -65,6 +72,11 @@ function ForgotPasswordForm() {
 
   return (
     <div className="form-container" style={{ height: '100vh' }}>
+      {isLoading && (
+        <div className="m-loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box
@@ -117,10 +129,11 @@ function ForgotPasswordForm() {
               <Button
                 className="authbutton"
                 type="submit"
+                disabled={isLoading}
                 variant="contained"
                 sx={{ width: '80%' }}
               >
-                Continue
+                {isLoading ? 'Processing...' : 'Continue'} 
               </Button>
             </Box>
           </Paper>

@@ -19,6 +19,7 @@ function VolunteerView() {
     const [selectedDonationRequestId, setSelectedDonationRequestId] = useState(null);
     const [confirmationVisible, setConfirmationVisible] = useState(false);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSort = (key) => {
         if (sortKey === key) {
@@ -60,6 +61,7 @@ function VolunteerView() {
     };
 
     const handleDelete = (id) => {
+        setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`, {
             method: 'DELETE',
             headers: {
@@ -87,15 +89,18 @@ function VolunteerView() {
                 fetch(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`)
                     .then(response => response.json())
                     .then(data => {
+                        setIsLoading(false);
                         // alert(JSON.stringify(data));
                         setVolunteers(data);
                     })
                     .catch(error => {
+                        setIsLoading(false);
                         console.error(error);
                         handleError('An error occurred while fetching the data');
                     });
             })
             .catch(error => {
+                setIsLoading(false);
                 console.error(error);
                 handleError('An error occurred while deleting the volunteer event');
             });
@@ -147,6 +152,11 @@ function VolunteerView() {
 
     return (
         <div>
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="top">
                 <div className="topInfo">
                     <h2>Volunteer Event Management Page</h2>

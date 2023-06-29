@@ -121,14 +121,14 @@ function Admin() {
                     {
                       label: "Total Money",
                       data,
-                      backgroundColor: "rgba(79, 121, 206, 0.2)",
-                      borderColor: "rgba(79, 121, 206, 1)",
+                      backgroundColor: "#8f8de6",
+                      borderColor: "#8f8de6",
                       borderWidth: 2,
                       pointRadius: 4,
-                      pointBackgroundColor: "rgba(79, 121, 206, 1)",
+                      pointBackgroundColor: "#8f8de6",
                       pointBorderColor: "#fff",
                       pointHoverRadius: 6,
-                      pointHoverBackgroundColor: "rgba(79, 121, 206, 1)",
+                      pointHoverBackgroundColor: "#8f8de6",
                       pointHoverBorderColor: "#fff",
                       pointHitRadius: 8,
                     },
@@ -177,15 +177,15 @@ function Admin() {
         </div>
         <div className="container">
           <div className="box">
-            <h3>New Donation Request</h3>
+            <h4>New Donation Request</h4>
             <p>{NewRequest}</p>
           </div>
           <div className="box">
-            <h3>Rejected Donation Request</h3>
+            <h4>Rejected Donation Request</h4>
             <p>{RejectedRequest}</p>
           </div>
           <div className="box">
-            <h3>Accepted Donation Request</h3>
+            <h4>Accepted Donation Request</h4>
             <p>{ApprovedRequest}</p>
           </div>
         </div>

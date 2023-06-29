@@ -34,6 +34,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleemailChange = (event) => {
     setemail(event.target.value);
@@ -53,7 +54,7 @@ function LoginPage() {
 
   const handleSubmit = (event) => {  // to handle submit form when user login into the application
     event.preventDefault();
-
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API_URL}login/`, { // send data to the django backend for authentication method
       method: 'POST',
       headers: {
@@ -76,9 +77,11 @@ function LoginPage() {
           if (data.isAdmin) { //send user to admin page if user is staff
             window.location.href = '/admin';
           } else {  //send user to community page if user is community
-            window.location.href = '/'; 
+            setIsLoading(false);
+            window.location.href = '/';
           }
         } else {
+          setIsLoading(false);
           { handleLoginError(data.error) } // handle error from backend if email or password does not exist in system
         }
       })
@@ -103,6 +106,11 @@ function LoginPage() {
 
   return (
     <ThemeProvider theme={theme}>
+      {isLoading && (
+                <div className="m-loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -160,12 +168,13 @@ function LoginPage() {
                 onChange={handlePasswordChange} />
               <Button
                 className="authbutton"
+                disabled={isLoading}
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                {isLoading ? 'Processing...' : 'Sign In'}
               </Button>
               <Grid container>
                 <Grid item xs>

@@ -121,6 +121,11 @@ function PaymentConfirm() {
 
     return (
         <ThemeProvider theme={theme}>
+            {isLoading && (
+                <div className="m-loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <CssBaseline />
             <Box
                 sx={{

@@ -32,6 +32,7 @@ function SignUpPage() {
     const [professionError, setProfessionError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -74,29 +75,29 @@ function SignUpPage() {
 
     const handleLoginError = (error) => {
         toast.error(
-          <div className="custom-toast">
-            <div className="custom-toast-icon" />
-            {error}
-          </div>,
-          {
-            className: 'custom-toast-container',
-             closeButton: false,
-          }
+            <div className="custom-toast">
+                <div className="custom-toast-icon" />
+                {error}
+            </div>,
+            {
+                className: 'custom-toast-container',
+                closeButton: false,
+            }
         );
-      };
+    };
 
-      const handleLoginSucess = (message) => {
+    const handleLoginSucess = (message) => {
         toast.success(
-          <div className="custom-toast">
-            <div className="custom-toast-icon" />
-            {message}
-          </div>,
-          {
-            className: 'custom-toast-container',
-             closeButton: false,
-          }
+            <div className="custom-toast">
+                <div className="custom-toast-icon" />
+                {message}
+            </div>,
+            {
+                className: 'custom-toast-container',
+                closeButton: false,
+            }
         );
-      };
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -165,6 +166,7 @@ function SignUpPage() {
             errors = true;
         }
         if (!errors) {
+            setIsLoading(true);
             fetch(`${process.env.REACT_APP_API_URL}register/`, {
                 method: 'POST',
                 headers: {
@@ -184,9 +186,12 @@ function SignUpPage() {
                 .then(response => {
                     if (!response.ok) {
                         return response.json().then(data => {
-                            { handleLoginError(data.error) }
+                            {
+                                setIsLoading(false);
+                                handleLoginError(data.error)
+                            }
                             throw new Error(response.statusText);
-                          });
+                        });
                     }
                     return response.json();
                 })
@@ -197,13 +202,20 @@ function SignUpPage() {
                     }, 5000);
                 })
                 .catch(error => {
+                    setIsLoading(false);
                     console.error(error);
+                    handleError('An error occured while sign up. Please try again');
                 });
         }
     };
 
     return (
         <div style={{ backgroundColor: "#f0f0f0" }}>
+            {isLoading && (
+                <div className="m-loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <Box
@@ -369,12 +381,13 @@ function SignUpPage() {
                                     <Grid item xs={12}>
                                         <Button
                                             className="authbutton"
+                                            disabled={isLoading}
                                             type="submit"
                                             fullWidth
                                             variant="contained"
                                             sx={{ mt: 3, mb: 2 }}
                                         >
-                                            Sign Up
+                                            {isLoading ? 'Processing...' : 'Sign Up'}
                                         </Button>
                                         <Grid container justifyContent="flex-end">
                                             Already have an account?

@@ -22,6 +22,7 @@ function DonateView() {
     const [selectedAmount, setSelectedAmount] = useState(null);
     const [selectedStatus, setSelectedStatus] = useState(null);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleError = (error) => {
         toast.error(
@@ -107,6 +108,7 @@ function DonateView() {
             handleError('Cannot delete the donation transaction. Money received cannot exceed money spend.');
             return;
         }
+        setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}donationtransaction/add/`, {
             method: 'DELETE',
             headers: {
@@ -133,6 +135,7 @@ function DonateView() {
                 fetch(`${process.env.REACT_APP_API_URL}donationtransaction/add/`)
                     .then(response => response.json())
                     .then(data => {
+                        setIsLoading(false);
                         setDonateRequests(data);
                         let all = 0;
                         let donor = 0;
@@ -151,11 +154,13 @@ function DonateView() {
                         setCurrentPage(0);
                     })
                     .catch(error => {
+                        setIsLoading(false);
                         console.error(error);
                         handleError('An error occurred while fetching the data');
                     });
             })
             .catch(error => {
+                setIsLoading(false);
                 console.error(error);
                 handleError('An error occurred while deleting the donation transaction');
             });
@@ -183,6 +188,11 @@ function DonateView() {
 
     return (
         <div>
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="top">
                 <div className="topInfo">
                     <h2>Donation Management Page</h2>

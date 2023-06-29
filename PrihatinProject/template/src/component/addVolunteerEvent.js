@@ -28,6 +28,7 @@ function AddVolunteerEvent() {
   const [timeStartError, setTimeStartError] = useState('');
   const [timeEndError, setTimeEndError] = useState('');
   const [venueError, setVenueError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleStartDateChange = (e) => {
     const selectedStartDate = e.target.value;
@@ -81,7 +82,7 @@ function AddVolunteerEvent() {
     if (!/^\d+(\.\d{1,2})?$/.test(fees)) {
       setFeesError('Please enter a valid number.');
       return;
-    } else if (fees <= 0) {
+    } else if (fees < 0) {
       setFeesError('Please enter a valid amount.');
       return;
     } else {
@@ -132,12 +133,13 @@ function AddVolunteerEvent() {
     formData.append('time_start', timeStart);
     formData.append('time_end', timeEnd);
     formData.append('venue', venue);
-    formData.append('status', "on");
+    formData.append('status', "off");
 
     images.forEach((image, index) => {
       formData.append(`image_${index + 1}`, image);
     });
 
+    setIsLoading(true);
     axios.post(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`, formData)
       .then((response) => {
         console.log(response.data);
@@ -147,10 +149,12 @@ function AddVolunteerEvent() {
             window.location.href = '/VolunteerEvent';
           }, 3000);
         } else {
+          setIsLoading(false);
           handleError(response.data.error);
         }
       })
       .catch((error) => {
+        setIsLoading(false);
         console.log(error)
         handleError('Something went wrong. Please try again');
       });
@@ -184,6 +188,11 @@ function AddVolunteerEvent() {
 
   return (
     <div>
+      {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
       <div className="top">
         <div className="topInfo">
           <h2>Add Volunteer Event</h2>
@@ -385,10 +394,11 @@ function AddVolunteerEvent() {
               </div>
               <Button
                 type="submit"
+                disabled={isLoading}
                 variant="contained"
                 className='buttonStyle'
               >
-                Submit
+                {isLoading ? 'Processing...' : 'Submit'}
               </Button>
             </Box>
           </div>

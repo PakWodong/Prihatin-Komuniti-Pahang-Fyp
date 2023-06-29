@@ -23,6 +23,7 @@ function DonationForm() {
     const [amountError, setAmountError] = useState('');
     const [donorNameError, setDonorNameError] = useState('');
     const [dateError, setDateError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const handleAmountChange = (event) => {
@@ -72,11 +73,11 @@ function DonationForm() {
             setAmountError('');
         }
 
-        if(!date){
+        if (!date) {
             setDateError('Please enter a date');
             return
         }
-        else{
+        else {
             setDateError('')
         }
 
@@ -91,7 +92,7 @@ function DonationForm() {
             handleError('Recepient amount cannot exceed the current total money left');
             return;
         }
-
+        setIsLoading(true);
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_API_URL}donationtransaction/add/`,
@@ -100,7 +101,7 @@ function DonationForm() {
                     donation_date: formattedDate,
                     donor_name: donorName,
                     donation_type: donationType,
-                    purpose:purpose,
+                    purpose: purpose,
                 },
                 { withCredentials: true }
             );
@@ -110,9 +111,11 @@ function DonationForm() {
                     window.location.href = '/donate';
                 }, 3000);
             } else {
+                setIsLoading(false);
                 handleError(response.data.error);
             }
         } catch (error) {
+            setIsLoading(false);
             handleError('Something went wrong. Please try again');
         }
     };
@@ -145,6 +148,11 @@ function DonationForm() {
 
     return (
         <div>
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="top">
                 <div className="topInfo">
                     <h2 >Add Donation Transaction Page</h2>
@@ -186,9 +194,9 @@ function DonationForm() {
                                 value={date}
                                 inputProps={{
                                     max: currentDate,
-                                  }}
-                                  error={Boolean(dateError)}
-                                  helperText={dateError}
+                                }}
+                                error={Boolean(dateError)}
+                                helperText={dateError}
                                 onChange={handleDateChange}
                                 sx={{ mb: 2, width: '80%' }}
                             />
@@ -236,10 +244,11 @@ function DonationForm() {
                             </TextField>
                             <Button
                                 type="submit"
+                                disabled={isLoading}
                                 variant="contained"
                                 className='buttonStyle'
                             >
-                                Submit
+                                {isLoading ? 'Processing...' : 'Submit'}
                             </Button>
                         </Box>
                     </div>

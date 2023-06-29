@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -20,8 +20,9 @@ function PaymentInfo() {
     const [donorNameError, setDonorNameError] = useState('');
     const [amount, setAmount] = useState('');
     const [amountError, setAmountError] = useState('');
-    const purpose=location.state.event;
+    const purpose = location.state.event;
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleError = (error) => {
         toast.error(
@@ -49,10 +50,10 @@ function PaymentInfo() {
         if (!amount || parseFloat(amount) <= 2) {
             setAmountError('Please enter a valid amount.');
             return;
-        } else if(!/^\d+(\.\d{1,2})?$/.test(amount)){
+        } else if (!/^\d+(\.\d{1,2})?$/.test(amount)) {
             setAmountError('Please enter a valid number.');
             return;
-        } else{
+        } else {
             setAmountError('');
         }
 
@@ -62,6 +63,7 @@ function PaymentInfo() {
             amount: amountInCents,
         };
         try {
+            setIsLoading(true);
             const response = await fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/paymentInfo/`, {
                 method: 'POST',
                 headers: {
@@ -72,20 +74,24 @@ function PaymentInfo() {
             if (response.ok) {
                 const responseData = await response.json();
                 const clientSecret = responseData.clientSecret;
-                navigate('/paymentConfirm', { state: { 
-                    clientSecret,
-                    amount,
-                    donorName,
-                    purpose,
-                } });
-                
+                navigate('/paymentConfirm', {
+                    state: {
+                        clientSecret,
+                        amount,
+                        donorName,
+                        purpose,
+                    }
+                });
+
             } else {
+                setIsLoading(false);
                 handleError('Payment creation failed. Please try again')
                 console.log('Payment creation failed.');
             }
 
         }
         catch (error) {
+            setIsLoading(false);
             handleError('Error occurred while processing the payment')
             console.error('Error occurred while processing the payment:');
         }
@@ -118,6 +124,11 @@ function PaymentInfo() {
 
     return (
         <ThemeProvider theme={theme}>
+            {isLoading && (
+                <div className="m-loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <CssBaseline />
             <Box
                 sx={{
@@ -181,13 +192,14 @@ function PaymentInfo() {
                         />
                         <Button
                             type="submit"
+                            disabled={isLoading}
                             variant="contained"
                             sx={{
-                                p:2
+                                p: 2
                             }}
                             className="authbutton"
                         >
-                            Make Payment
+                           {isLoading ? 'Processing...' : 'Make Payment'}  
                         </Button>
                     </Box>
                 </Paper>

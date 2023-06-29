@@ -21,6 +21,7 @@ function DonationView() {
     const [reason, setReason] = useState('');
     const [sortKey, setSortKey] = useState("id");
     const [sortOrder, setSortOrder] = useState("asc");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleError = (error) => {
         toast.error(
@@ -105,6 +106,7 @@ function DonationView() {
 
 
     const updateStatus = (id, status, email, reason) => {
+        setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}donation/request/`, {
             method: 'PUT',
             headers: {
@@ -128,15 +130,18 @@ function DonationView() {
                 fetch(`${process.env.REACT_APP_API_URL}/donation/request/`)
                     .then(response => response.json())
                     .then(data => {
+                        setIsLoading(false);
                         setDonationRequests(data);
                         setCurrentPage(0);
                     })
                     .catch(error => {
+                        setIsLoading(false);
                         console.error(error)
                         handleError('An error occurred while fetching the data');
                     });
             }, [sortKey, sortOrder])
             .catch(error => {
+                setIsLoading(false);
                 console.error(error);
                 handleError('An error occurred while updating the status');
             });
@@ -158,6 +163,11 @@ function DonationView() {
 
     return ( //return html page to display to user
         <div>  
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="top">    {/* header page of application */}
                 <div className="topInfo">
                     <h2>Donation Requests Page</h2>

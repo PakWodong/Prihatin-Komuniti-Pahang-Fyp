@@ -35,6 +35,7 @@ function UpdateVolunteerEvent() {
     const [timeStartError, setTimeStartError] = useState('');
     const [timeEndError, setTimeEndError] = useState('');
     const [venueError, setVenueError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const handleStartDateChange = (e) => {
@@ -103,7 +104,7 @@ function UpdateVolunteerEvent() {
         if (!/^\d+(\.\d{1,2})?$/.test(fees)) {
             setFeesError('Please enter a valid number.');
             return;
-        } else if (fees <= 0) {
+        } else if (fees < 0) {
             setFeesError('Please enter a valid amount.');
             return;
         } else {
@@ -144,7 +145,7 @@ function UpdateVolunteerEvent() {
         } else {
             setDescriptionError('');
         }
-
+        setIsLoading(true);
         const newImages = images.filter((image) => !previousImages.includes(image));
         previousImages.forEach((previousImageURL) => {
             const exists = images.some((imageURL) => imageURL === previousImageURL);
@@ -156,13 +157,17 @@ function UpdateVolunteerEvent() {
                             handleSuccess(response.data.message)
                         }
                         else {
+                            setIsLoading(false);
                             handleError(response.data.error)
+                            return;
                         }
                         console.log('Image deleted successfully:', response.data);
                     })
                     .catch((error) => {
+                        setIsLoading(false);
                         console.log(error)
                         handleError('Error in updating the image')
+                        return;
                     });
             }
         });
@@ -198,9 +203,11 @@ function UpdateVolunteerEvent() {
                 }, 3000);
             }
             else {
+                setIsLoading(false);
                 handleError(response.data.error)
             }
         } catch (error) {
+            setIsLoading(false);
             console.error(error);
             handleError('Something went wrong. Please try again');
         }
@@ -235,6 +242,11 @@ function UpdateVolunteerEvent() {
 
     return (
         <div>
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="top">
                 <div className="topInfo">
                     <h2>Update Volunteer Event</h2>
@@ -464,10 +476,11 @@ function UpdateVolunteerEvent() {
                             </div>
                             <Button
                                 type="submit"
+                                disabled={isLoading}
                                 variant="contained"
                                 className='buttonStyle'
                             >
-                                Update
+                                {isLoading ? 'Processing...' : 'Update'}
                             </Button>
                         </Box>
                     </div>

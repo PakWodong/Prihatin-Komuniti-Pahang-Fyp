@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function ParticipantManage() {
     const location = useLocation();
     const [participant, setParticipant] = useState([]);
-    const [id, setId] = location.state.id;
+    const ActivityId = location.state.id;
     const [currentPage, setCurrentPage] = useState(0);
     const [showDescription, setShowDescription] = useState(false);
     const [selectedDescription, setSelectedDescription] = useState('');
@@ -24,6 +24,7 @@ function ParticipantManage() {
     const [selectedEmail, setSelectedEmail] = useState('');
     const [confirmationVisible, setConfirmationVisible] = useState(false);
     const [reason, setReason] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const filteredRequests = participant.filter((participant) => participant.status === 'Pending');
     const sortedRequests = filteredRequests.sort((a, b) => {
@@ -103,18 +104,22 @@ function ParticipantManage() {
     };
 
     useEffect(() => {
-        const param = parseInt(id);
-        axios.get(`${process.env.REACT_APP_API_URL}donationactivity/ParticipantManage/${param}`)
-            .then(response => {
-                setParticipant(response.data);
+        const param = parseInt(ActivityId);
+        fetch(`${process.env.REACT_APP_API_URL}donationactivity/ParticipantManage/${param}`)
+            .then(response => response.json())
+            .then(data => {
+                // alert(JSON.stringify(data));
+                setParticipant(data);
             })
             .catch(error => {
-                console.error(error);
                 handleError('An error occurred while fetching the data');
+                console.error(error)
             });
     }, [sortKey, sortOrder]);
 
     const updateStatus = (id, status, email, reason) => {
+        setIsLoading(true);
+        const param = parseInt(ActivityId);
         fetch(`${process.env.REACT_APP_API_URL}donationactivity/volunteerParticipant/`, {
             method: 'PUT',
             headers: {
@@ -131,20 +136,25 @@ function ParticipantManage() {
             .then(data => {
                 if (data.success) {
                     handleSuccess(data.message)
-                    console.log('Participation status updated successfully:', data);
-                    const updatedParticipant = participant.map(participant => {
-                        if (participant.id === id) {
-                            return { ...participant, status: status };
-                        }
-                        return participant;
-                    });
-                    setParticipant(updatedParticipant);
                 }
                 else {
                     handleError(data.error)
                 }
-            })
+                fetch(`${process.env.REACT_APP_API_URL}donationactivity/ParticipantManage/${param}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        setIsLoading(false);
+                        setParticipant(data);
+                        setCurrentPage(0);
+                    })
+                    .catch(error => {
+                        setIsLoading(false);
+                        console.error(error)
+                        handleError('An error occurred while fetching the data');
+                    });
+            }, [sortKey, sortOrder])
             .catch(error => {
+                setIsLoading(false);
                 handleError('There was a problem updating the donation request status')
                 console.error('There was a problem updating the donation request status:', error);
             });
@@ -152,6 +162,11 @@ function ParticipantManage() {
 
     return (
         <div>
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="top">
                 <div className="topInfo">
                     <h2>Volunteer Participant Page</h2>
