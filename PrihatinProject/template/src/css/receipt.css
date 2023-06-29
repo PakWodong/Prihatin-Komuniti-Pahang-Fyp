@@ -1,0 +1,53 @@
+.receipt-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    margin-top: 10%;
+  }
+  
+  .receipt-container h1 {
+    text-align: center;
+    color: #34743f;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .fail{
+    color: #ff1e00;
+  }
+  
+  .receipt-details {
+    margin-top: 30px;
+  }
+  
+  .receipt-field {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+  }
+  
+  .field-label {
+    flex-basis: 100px;
+    font-weight: bold;
+    color: #555;
+    font-size: 16px;
+  }
+  
+  .field-value {
+    flex-grow: 1;
+    color: #333;
+    font-size: 16px;
+  }
+  
+  .formlogo {
+    display: block;
+    margin: 0 auto;
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
