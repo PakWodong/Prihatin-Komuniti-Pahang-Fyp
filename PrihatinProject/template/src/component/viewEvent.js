@@ -57,7 +57,7 @@ function ViewEvent() {
                 <div className="topInfo">
                     <h2>{volunteer.name}</h2>
                     <div className="Prihatin">
-                        | Prihatin Komuniti Pahang
+                        | {localStorage.getItem('username')}
                     </div>
                 </div>
                 <div className="infoContainer">

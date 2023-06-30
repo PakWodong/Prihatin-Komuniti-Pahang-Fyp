@@ -71,7 +71,7 @@ function Home() {
           <div className="topInfo">
             <h2>Home Page</h2>
             <div className="Prihatin">
-              | Prihatin Komuniti Pahang
+              | {localStorage.getItem('username')}
             </div>
           </div>
           <div className="container-fluid">

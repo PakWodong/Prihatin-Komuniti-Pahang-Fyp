@@ -101,7 +101,7 @@ function RegisterVolunteer() {
                 <div className="topInfo">
                     <h2 >Add Donation Transaction Page</h2>
                     <div className="Prihatin">
-                        | Prihatin Komuniti Pahang
+                        | {localStorage.getItem('username')}
                     </div>
                 </div>
                 <div className="formcontainer">

@@ -34,7 +34,7 @@ function RegisteredEvent() {
         <div className="topInfo">
           <h2>Registered Event</h2>
           <div className="Prihatin">
-            | Prihatin Komuniti Pahang
+            | {localStorage.getItem('username')}
           </div>
         </div>
         <div className="container-fluid">
