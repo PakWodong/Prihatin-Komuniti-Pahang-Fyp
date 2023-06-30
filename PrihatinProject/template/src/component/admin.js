@@ -208,17 +208,17 @@ function Admin() {
             <hr />
             <div className="info">
               <h4>Total Money Left</h4>
-              <h4 style={{ marginLeft: "auto" }}>RM{totalMoney}</h4>
+              <h4 style={{ marginLeft: "auto" }}>RM{totalMoney.toFixed(2)}</h4>
             </div>
             <hr />
             <div className="info">
               <h4>Money Received</h4>
-              <h4 style={{ marginLeft: "auto" }}>RM{donorMoney}</h4>
+              <h4 style={{ marginLeft: "auto" }}>RM{donorMoney.toFixed(2)}</h4>
             </div>
             <hr />
             <div className="info">
               <h4>Money Spend</h4>
-              <h4 style={{ marginLeft: "auto" }}>RM{recepientMoney}</h4>
+              <h4 style={{ marginLeft: "auto" }}>RM{recepientMoney.toFixed(2)}</h4>
             </div>
           </div>
         </div>

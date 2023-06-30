@@ -5,6 +5,7 @@ import { FaImage } from "react-icons/fa";
 
 function RegisteredEvent() {
   const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const faImageStyle = {
     fontSize: '100px',
@@ -32,6 +33,11 @@ function RegisteredEvent() {
 
   return (
     <div>
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
       <div className="top">
         <div className="topInfo">
           <h2>Registered Event</h2>

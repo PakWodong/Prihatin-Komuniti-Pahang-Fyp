@@ -17,6 +17,7 @@ function ViewEvent() {
     const [images, setImages] = useState([]);
     const [isRegistered, setIsRegistered] = useState(false);
     const [events, setEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         // Access the volunteer object and set the form fields accordingly
@@ -55,6 +56,11 @@ function ViewEvent() {
 
     return (
         <div>
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="top">
                 <div className="topInfo">
                     <h2>{volunteer.name}</h2>

@@ -15,6 +15,7 @@ function ParticipantView() {
     const [sortKey, setSortKey] = useState("id");
     const [sortOrder, setSortOrder] = useState("asc");
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSort = (key) => {
         if (sortKey === key) {
@@ -72,6 +73,11 @@ function ParticipantView() {
 
     return (
         <div>
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="top">
                 <div className="topInfo">
                     <h2>Volunteer Participant Management Page</h2>

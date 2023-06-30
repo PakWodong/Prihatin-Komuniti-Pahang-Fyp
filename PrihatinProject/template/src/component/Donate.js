@@ -206,15 +206,15 @@ function DonateView() {
                 <div className="container">
                     <div className="box">
                         <h3>Total Money Left</h3>
-                        <p>RM {totalMoney}</p>
+                        <p>RM {totalMoney.toFixed(2)}</p>
                     </div>
                     <div className="box">
                         <h3>Money Received</h3>
-                        <p>RM {donorMoney}</p>
+                        <p>RM {donorMoney.toFixed(2)}</p>
                     </div>
                     <div className="box">
                         <h3>Money Spend</h3>
-                        <p>RM {recepientMoney}</p>
+                        <p>RM {recepientMoney.toFixed(2)}</p>
                     </div>
                 </div>
 
