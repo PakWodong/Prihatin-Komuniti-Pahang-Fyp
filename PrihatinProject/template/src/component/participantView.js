@@ -52,6 +52,7 @@ function ParticipantView() {
 
 
     useEffect(() => {
+        setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}donationactivity/volunteerParticipant/`)
             .then(response => response.json())
             .then(data => {
@@ -60,11 +61,13 @@ function ParticipantView() {
             })
             .catch(error => {
                 handleError('An error occurred while fetching the data');
-                console.error(error)});
+                console.error(error)
+            });
+        setIsLoading(false);
     }, [sortKey, sortOrder]);
 
     const handleUpdate = (id) => {
-        navigate('/participantManage', { state: { id} });
+        navigate('/participantManage', { state: { id } });
     };
 
     return (

@@ -44,6 +44,7 @@ function VolunteerView() {
 
 
     useEffect(() => {
+        setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`)
             .then(response => response.json())
             .then(data => {
@@ -54,6 +55,7 @@ function VolunteerView() {
                 console.error(error);
                 handleError('An error occurred while fetching the data');
             });
+        setIsLoading(false);
     }, [sortKey, sortOrder]);
 
     const handleUpdate = (volunteer) => {

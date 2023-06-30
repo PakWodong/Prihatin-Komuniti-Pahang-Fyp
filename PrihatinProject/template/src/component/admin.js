@@ -15,19 +15,20 @@ function Admin() {
   const [lastSevenDays, setLastSevenDays] = useState([]);
   const chartContainerRef = useRef(null);
   const [chart, setChart] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleError = (error) => {
     toast.error(
-        <div className="custom-toast">
-            <div className="custom-toast-icon" />
-            {error}
-        </div>,
-        {
-            className: 'custom-toast-container',
-            closeButton: false,
-        }
+      <div className="custom-toast">
+        <div className="custom-toast-icon" />
+        {error}
+      </div>,
+      {
+        className: 'custom-toast-container',
+        closeButton: false,
+      }
     );
-};
+  };
 
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
@@ -36,6 +37,7 @@ function Admin() {
       return;
     }
     else {
+      setIsLoading(true);
       fetch(`${process.env.REACT_APP_API_URL}donation/request/`)
         .then(response => response.json())
         .then(data => {
@@ -74,6 +76,7 @@ function Admin() {
               recepient = recepient + parseFloat(request.amount);
             }
           });
+          setIsLoading(false);
           all = donor - recepient;
           setNewDonor(donor);
           setTotalMoney(all);
@@ -82,7 +85,7 @@ function Admin() {
           // const lastSevenDays = [];
           for (let i = 6; i >= 0; i--) {
             const date = new Date(currentDate);
-            date.setDate(currentDate.getDate() - (i-1));
+            date.setDate(currentDate.getDate() - (i - 1));
             const formattedDate = date.toISOString().split("T")[0];
             date.setDate(currentDate.getDate() - (i));
             const newDate = date.toISOString().split("T")[0];
@@ -161,13 +164,18 @@ function Admin() {
         })
         .catch(error => {
           console.error(error);
-      });
+        });
     };
 
   }, []);
 
   return (
     <div>
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
       <div className="top">
         <div className="topInfo">
           <h2>Overview</h2>

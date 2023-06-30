@@ -94,6 +94,7 @@ function DonationView() {
     };
 
     useEffect(() => {
+        setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}donation/request/`)
             .then(response => response.json())
             .then(data => setDonationRequests(data))
@@ -101,6 +102,7 @@ function DonationView() {
                 console.error(error)
                 handleError('An error occurred while fetching the data');
             });
+        setIsLoading(false);
     }, [sortKey, sortOrder]);
 
 
@@ -162,7 +164,7 @@ function DonationView() {
 
 
     return ( //return html page to display to user
-        <div>  
+        <div>
             {isLoading && (
                 <div className="loading-overlay">
                     <div className="spinner"></div>

@@ -17,7 +17,8 @@ import django
 print(django.conf.settings.PASSWORD_HASHERS)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -133,7 +134,7 @@ PASSWORD_HASHERS = [
 ]
 
 
-CORS_ALLOWED_ORIGINS = [    "http://localhost:3000",    "http://127.0.0.1:3000",]
+CORS_ALLOWED_ORIGINS = [    "http://localhost:8000",    "http://127.0.0.1:8000",]
 CORS_ALLOW_CREDENTIALS = True
 
 
@@ -152,6 +153,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'template/build/static')]
 
 # Default primary key field type
@@ -172,11 +174,12 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = 'AKIAX33ASPIMBOK2FL77'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'prihatinpicture'
+STATICFILES_STORAGE = 'PrihatinSystem.storage_backends.S3StaticStorage'
 
 STRIPE_SECRET_KEY = 'sk_test_51NBuv7E3FORUG47UXy7uwmOYBABX2WvSgzSkjgPQG5crgH9IRnnsLxWo0Wyui0pL3GwlePfFk05pn8JsPM0WfLSv001EcJlnxc'
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51NBuv7E3FORUG47UtxG0clh2I7ZagmkOdMDFTzf9e0sjSEMZA44OQPJllBgP6S1en6OEv1mOibfDX6XG5uHjNJrC00F6XKQqTX'
 
-FRONTEND_URL = 'http://localhost:3000'
+FRONTEND_URL = 'http://localhost:8000'
 
 
 

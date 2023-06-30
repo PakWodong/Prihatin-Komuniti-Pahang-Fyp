@@ -77,7 +77,6 @@ function LoginPage() {
           if (data.isAdmin) { //send user to admin page if user is staff
             window.location.href = '/admin';
           } else {  //send user to community page if user is community
-            setIsLoading(false);
             window.location.href = '/';
           }
         } else {
@@ -86,6 +85,7 @@ function LoginPage() {
         }
       })
       .catch(error => {
+        setIsLoading(false);
         handleLoginError('An error occured while login. Please try again') //handle error if cannot connect to the backend
         console.error(error);
       });

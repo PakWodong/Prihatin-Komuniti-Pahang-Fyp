@@ -22,16 +22,16 @@ function Home() {
 
   const handleError = (error) => {
     toast.error(
-        <div className="custom-toast">
-            <div className="custom-toast-icon" />
-            {error}
-        </div>,
-        {
-            className: 'custom-toast-container',
-            closeButton: false,
-        }
+      <div className="custom-toast">
+        <div className="custom-toast-icon" />
+        {error}
+      </div>,
+      {
+        className: 'custom-toast-container',
+        closeButton: false,
+      }
     );
-};
+  };
 
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
@@ -52,7 +52,7 @@ function Home() {
         .catch(error => {
           console.error(error);
           handleError('An error occurred while fetching the data');
-      });
+        });
     }
   }, []);
 
@@ -63,8 +63,8 @@ function Home() {
   return (
     <div>
       {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <h2>Loading...</h2>
+        <div className="loading-overlay">
+          <div className="spinner"></div>
         </div>
       ) : (
         <div className="top">

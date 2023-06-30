@@ -104,6 +104,7 @@ function ParticipantManage() {
     };
 
     useEffect(() => {
+        setIsLoading(true);
         const param = parseInt(ActivityId);
         fetch(`${process.env.REACT_APP_API_URL}donationactivity/ParticipantManage/${param}`)
             .then(response => response.json())
@@ -115,6 +116,7 @@ function ParticipantManage() {
                 handleError('An error occurred while fetching the data');
                 console.error(error)
             });
+        setIsLoading(false);
     }, [sortKey, sortOrder]);
 
     const updateStatus = (id, status, email, reason) => {

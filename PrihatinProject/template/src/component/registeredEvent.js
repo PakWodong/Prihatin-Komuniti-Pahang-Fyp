@@ -16,6 +16,7 @@ function RegisteredEvent() {
 
   useEffect(() => {
     {
+      setIsLoading(true);
       const param = parseInt(localStorage.getItem('user_id'));
       axios.get(`${process.env.REACT_APP_API_URL}donationactivity/VolunteerRegistered/${param}`)
         .then(response => {
@@ -24,7 +25,8 @@ function RegisteredEvent() {
         .catch(error => {
           console.error(error);
           handleError('An error occurred while fetching the data');
-      });
+        });
+      setIsLoading(false);
     }
   }, []);
 

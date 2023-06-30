@@ -11,6 +11,7 @@ const localizer = momentLocalizer(moment);
 
 function Calendar() {
     const [events, setEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleError = (error) => {
         toast.error(
@@ -26,11 +27,14 @@ function Calendar() {
     };
     
     useEffect(() => {
+        setIsLoading(true);
         axios.get(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`)
             .then(response => {
                 setEvents(response.data);
+                setIsLoading(false);
             })
             .catch(error => {
+                setIsLoading(false);
                 console.error(error);
                 handleError('An error occurred while fetching the data');
             });
@@ -38,6 +42,11 @@ function Calendar() {
 
     return (
         <div>
+            {isLoading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="top">
                 <div className="topInfo">
                     <h2>Calendar Page</h2>

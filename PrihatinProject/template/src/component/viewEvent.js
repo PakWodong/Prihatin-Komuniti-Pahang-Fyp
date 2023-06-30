@@ -22,6 +22,7 @@ function ViewEvent() {
         // Access the volunteer object and set the form fields accordingly
         {
             //get the user ID from local storage
+            setIsLoading(true);
             const param = parseInt(localStorage.getItem('user_id'));
             //get the volunteer activity for registered event
             axios.get(`${process.env.REACT_APP_API_URL}donationactivity/VolunteerRegistered/${param}`)
@@ -36,6 +37,7 @@ function ViewEvent() {
                     console.error(error);
                     handleError('An error occurred while fetching the data');
                 });
+            setIsLoading(false);
         }
         setName(volunteer.name);
         setDescription(volunteer.description);

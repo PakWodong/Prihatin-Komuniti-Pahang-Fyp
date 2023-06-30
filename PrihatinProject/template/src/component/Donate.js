@@ -78,6 +78,7 @@ function DonateView() {
     const currentItems = sortedRequests.slice(offset, offset + itemsPerPage);
 
     useEffect(() => {
+        setIsLoading(true);
         fetch(`${process.env.REACT_APP_API_URL}donationtransaction/add/`)
             .then(response => response.json())
             .then(data => {
@@ -96,8 +97,10 @@ function DonateView() {
                 setNewDonor(donor);
                 setTotalMoney(all);
                 setNewRecepient(recepient);
+                setIsLoading(false);
             })
             .catch(error => {
+                setIsLoading(false);
                 console.error(error);
                 handleError('An error occurred while fetching the data');
             });
