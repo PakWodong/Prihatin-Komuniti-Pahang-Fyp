@@ -79,7 +79,7 @@ function DonateView() {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}donationtransaction/add/`)
+        fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`)
             .then(response => response.json())
             .then(data => {
                 let all = 0;
@@ -112,7 +112,7 @@ function DonateView() {
             return;
         }
         setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}donationtransaction/add/`, {
+        fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ function DonateView() {
                     handleError(data.error);
                 }
                 console.log('Donation request status updated successfully:', data);
-                fetch(`${process.env.REACT_APP_API_URL}donationtransaction/add/`)
+                fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`)
                     .then(response => response.json())
                     .then(data => {
                         setIsLoading(false);

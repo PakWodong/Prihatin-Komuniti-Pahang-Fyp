@@ -36,7 +36,6 @@ function Home() {
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
     const isAdmin = localStorage.getItem('isAdmin');
-
     if (!accessToken) {
       window.location.href = '/login';
       return;
@@ -44,12 +43,13 @@ function Home() {
       window.location.href = '/admin';
       return;
     } else {
-      axios.get(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`)
+      axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`)
         .then(response => {
           setEvents(response.data);
           setLoading(false);
         })
         .catch(error => {
+          setLoading(false);
           console.error(error);
           handleError('An error occurred while fetching the data');
         });

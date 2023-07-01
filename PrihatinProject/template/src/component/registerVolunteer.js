@@ -69,7 +69,7 @@ function RegisterVolunteer() {
             user: userId
         };
         setIsLoading(true);
-        axios.post(`${process.env.REACT_APP_API_URL}donationactivity/volunteerParticipant/`, data)
+        axios.post(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`, data)
             .then(response => {
                 console.log(response.data);
                 if (response.data.success) {

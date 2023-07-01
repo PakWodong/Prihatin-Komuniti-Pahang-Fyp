@@ -56,7 +56,7 @@ function PaymentConfirm() {
                         });
                     }, 3000);
                 } else if (paymentIntent) {  // if payment successfull
-                    await fetch(`${process.env.REACT_APP_API_URL}donationtransaction/payment/`, { // create a new donation transaction
+                    await fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/payment/`, { // create a new donation transaction
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

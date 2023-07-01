@@ -59,7 +59,7 @@ function PaymentForm() {
                 amount: amountInCents,
             };
             try {
-                const response = await fetch('http://localhost:8000/donationtransaction/payment/', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/payment/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

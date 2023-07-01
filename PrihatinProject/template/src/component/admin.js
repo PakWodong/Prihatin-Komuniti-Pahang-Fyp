@@ -38,7 +38,7 @@ function Admin() {
     }
     else {
       setIsLoading(true);
-      fetch(`${process.env.REACT_APP_API_URL}donation/request/`)
+      fetch(`${process.env.REACT_APP_API_URL}/donation/request/`)
         .then(response => response.json())
         .then(data => {
           let newCount = 0;
@@ -63,7 +63,7 @@ function Admin() {
           handleError('An error occurred while fetching the data');
         });
 
-      fetch(`${process.env.REACT_APP_API_URL}donationtransaction/add/`)
+      fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`)
         .then(response => response.json())
         .then(data => {
           let all = 0;

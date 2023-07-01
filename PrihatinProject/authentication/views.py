@@ -9,13 +9,11 @@ from .serializers import CommunitySerializer,UserSerializer
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth.tokens import default_token_generator
-from rest_framework.exceptions import ValidationError
-from authentication.models import User
+from authentication.models import Users
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -45,7 +43,7 @@ class LoginView(APIView):
                     'email':user.email,
                 })
         else:
-            registered_email = User.objects.filter(email=email).exists()  #check if email exist in database
+            registered_email = Users.objects.filter(email=email).exists()  #check if email exist in database
             if registered_email:
                 return Response({'error': 'Password does not match with registered email'}, status=401)  #if yes, send response error password does not match with email
             else:
@@ -111,7 +109,7 @@ class ForgotPassword(APIView):
             try:
                 user_model = get_user_model()
                 user = user_model.objects.get(email=email)
-            except User.DoesNotExist:
+            except Users.DoesNotExist:
                 return Response({'success': False, 'error': 'No user with this email address was found.'})
             else:
                 token_generator = default_token_generator

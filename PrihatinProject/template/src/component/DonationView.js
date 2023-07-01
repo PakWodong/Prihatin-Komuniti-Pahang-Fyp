@@ -95,7 +95,7 @@ function DonationView() {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}donation/request/`)
+        fetch(`${process.env.REACT_APP_API_URL}/donation/request/`)
             .then(response => response.json())
             .then(data => setDonationRequests(data))
             .catch(error => {
@@ -109,7 +109,7 @@ function DonationView() {
 
     const updateStatus = (id, status, email, reason) => {
         setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}donation/request/`, {
+        fetch(`${process.env.REACT_APP_API_URL}/donation/request/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ function DonationView() {
                 else {
                     handleError(data.error);
                 }
-                fetch(`${process.env.REACT_APP_API_URL}/donation/request/`)
+                fetch(`${process.env.REACT_APP_API_URL}//donation/request/`)
                     .then(response => response.json())
                     .then(data => {
                         setIsLoading(false);

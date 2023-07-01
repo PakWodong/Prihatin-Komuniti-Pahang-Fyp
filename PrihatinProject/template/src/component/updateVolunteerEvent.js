@@ -151,7 +151,7 @@ function UpdateVolunteerEvent() {
             const exists = images.some((imageURL) => imageURL === previousImageURL);
 
             if (!exists) {
-                axios.delete(`${process.env.REACT_APP_API_URL}donationactivity/deleteimage/`, { data: { id: volunteer.id, imageURL: previousImageURL } })
+                axios.delete(`${process.env.REACT_APP_API_URL}/donationactivity/deleteimage/`, { data: { id: volunteer.id, imageURL: previousImageURL } })
                     .then((response) => {
                         if (response.data.success) {
                             handleSuccess(response.data.message)
@@ -191,7 +191,7 @@ function UpdateVolunteerEvent() {
             });
             console.log(formData);
 
-            const response = await axios.put(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`, formData, {
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

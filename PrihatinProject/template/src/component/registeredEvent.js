@@ -19,7 +19,7 @@ function RegisteredEvent() {
     {
       setIsLoading(true);
       const param = parseInt(localStorage.getItem('user_id'));
-      axios.get(`${process.env.REACT_APP_API_URL}donationactivity/VolunteerRegistered/${param}`)
+      axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/VolunteerRegistered/${param}`)
         .then(response => {
           setEvents(response.data);
         })

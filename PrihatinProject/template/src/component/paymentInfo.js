@@ -64,7 +64,7 @@ function PaymentInfo() {
         };
         try {
             setIsLoading(true);
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/paymentInfo/`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}//donationtransaction/paymentInfo/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

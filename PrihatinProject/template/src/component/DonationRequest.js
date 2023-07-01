@@ -66,7 +66,7 @@ function DonationRequest() {
 
         try {
             setIsLoading(true);
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}donation/request/`, { email, name, description });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/donation/request/`, { email, name, description });
 
             if (response.data.success) {
                 handleLoginSucess(response.data.message)

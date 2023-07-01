@@ -54,7 +54,7 @@ function ParticipantView() {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}donationactivity/volunteerParticipant/`)
+        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`)
             .then(response => response.json())
             .then(data => {
                 // alert(JSON.stringify(data));

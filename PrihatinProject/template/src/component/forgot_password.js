@@ -53,7 +53,7 @@ function ForgotPasswordForm() {
 
     try {
       setIsLoading(true);
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}forgot_password/`, { email }, { withCredentials: true });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/forgot_password/`, { email }, { withCredentials: true });
       if (response.data.success) {
         handleLoginSucess(response.data.message)
         setTimeout(() => {

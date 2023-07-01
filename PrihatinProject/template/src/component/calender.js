@@ -28,7 +28,7 @@ function Calendar() {
     
     useEffect(() => {
         setIsLoading(true);
-        axios.get(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`)
+        axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`)
             .then(response => {
                 setEvents(response.data);
                 setIsLoading(false);

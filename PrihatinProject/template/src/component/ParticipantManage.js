@@ -106,7 +106,7 @@ function ParticipantManage() {
     useEffect(() => {
         setIsLoading(true);
         const param = parseInt(ActivityId);
-        fetch(`${process.env.REACT_APP_API_URL}donationactivity/ParticipantManage/${param}`)
+        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/ParticipantManage/${param}`)
             .then(response => response.json())
             .then(data => {
                 // alert(JSON.stringify(data));
@@ -122,7 +122,7 @@ function ParticipantManage() {
     const updateStatus = (id, status, email, reason) => {
         setIsLoading(true);
         const param = parseInt(ActivityId);
-        fetch(`${process.env.REACT_APP_API_URL}donationactivity/volunteerParticipant/`, {
+        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ function ParticipantManage() {
                 else {
                     handleError(data.error)
                 }
-                fetch(`${process.env.REACT_APP_API_URL}donationactivity/ParticipantManage/${param}`)
+                fetch(`${process.env.REACT_APP_API_URL}/donationactivity/ParticipantManage/${param}`)
                     .then(response => response.json())
                     .then(data => {
                         setIsLoading(false);

@@ -55,7 +55,7 @@ function LoginPage() {
   const handleSubmit = (event) => {  // to handle submit form when user login into the application
     event.preventDefault();
     setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API_URL}login/`, { // send data to the django backend for authentication method
+    fetch(`${process.env.REACT_APP_API_URL}//login/`, { // send data to the django backend for authentication method
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

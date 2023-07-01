@@ -34,7 +34,7 @@ class UserManager(BaseUserManager):
     def check_password(self, password, encoded):
         return bcrypt.checkpw(password.encode(), encoded.encode())
 
-class User(AbstractBaseUser):
+class Users(AbstractBaseUser):
     email = models.EmailField(verbose_name='email', max_length=255, unique=True)
     username = models.CharField(max_length=30, unique=True)
     date_joined = models.DateTimeField(verbose_name='date joined', default=timezone.now)
@@ -61,11 +61,11 @@ class User(AbstractBaseUser):
         return True
 
 class StaffOfPrihatinKomunitiPahang(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(Users, on_delete=models.CASCADE, primary_key=True)
     staffid = models.CharField(max_length=30)
 
 class Community(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(Users, on_delete=models.CASCADE, primary_key=True)
     contact_number = models.CharField(max_length=30)
     location = models.CharField(max_length=30)
     profession = models.CharField(max_length=30)

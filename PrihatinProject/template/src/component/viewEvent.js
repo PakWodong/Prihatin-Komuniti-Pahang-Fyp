@@ -26,7 +26,7 @@ function ViewEvent() {
             setIsLoading(true);
             const param = parseInt(localStorage.getItem('user_id'));
             //get the volunteer activity for registered event
-            axios.get(`${process.env.REACT_APP_API_URL}donationactivity/VolunteerRegistered/${param}`)
+            axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/VolunteerRegistered/${param}`)
                 .then(response => {
                     const Registered = response.data.find(obj => obj.id === volunteer.id);
                     if (Registered) {

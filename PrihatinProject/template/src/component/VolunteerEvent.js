@@ -45,7 +45,7 @@ function VolunteerView() {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`)
+        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`)
             .then(response => response.json())
             .then(data => {
                 // alert(JSON.stringify(data));
@@ -64,7 +64,7 @@ function VolunteerView() {
 
     const handleDelete = (id) => {
         setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`, {
+        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ function VolunteerView() {
                 else {
                     handleError(data.error);
                 }
-                fetch(`${process.env.REACT_APP_API_URL}donationactivity/addEvent/`)
+                fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`)
                     .then(response => response.json())
                     .then(data => {
                         setIsLoading(false);

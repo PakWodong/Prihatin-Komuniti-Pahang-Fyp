@@ -167,7 +167,7 @@ function SignUpPage() {
         }
         if (!errors) {
             setIsLoading(true);
-            fetch(`${process.env.REACT_APP_API_URL}register/`, {
+            fetch(`${process.env.REACT_APP_API_URL}/register/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -204,7 +204,7 @@ function SignUpPage() {
                 .catch(error => {
                     setIsLoading(false);
                     console.error(error);
-                    handleError('An error occured while sign up. Please try again');
+                    //handleLoginError('An error occured while sign up. Please try again');
                 });
         }
     };

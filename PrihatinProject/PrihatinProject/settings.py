@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-^%#wsw$r)#@u5et=7p-0fy=y6yt9xyyo+m_u1*3g)m=^z2fjf&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*' ]
 
 
 # Application definition
@@ -86,13 +86,24 @@ WSGI_APPLICATION = 'PrihatinProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'prihatin',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'prihatin',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'USER': 'admin',
+        'PASSWORD': 'prihatin',
+        'HOST': 'database-prihatin.cvyblrjj2kxd.ap-southeast-2.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
@@ -162,7 +173,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'template/build/static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = ['authentication.backend.EmailBackend']
-AUTH_USER_MODEL = 'authentication.User'
+AUTH_USER_MODEL = 'authentication.Users'
 
 EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 ANYMAIL = {
@@ -179,7 +190,7 @@ STATICFILES_STORAGE = 'PrihatinProject.static_storage.S3StaticStorage'
 STRIPE_SECRET_KEY = 'sk_test_51NBuv7E3FORUG47UXy7uwmOYBABX2WvSgzSkjgPQG5crgH9IRnnsLxWo0Wyui0pL3GwlePfFk05pn8JsPM0WfLSv001EcJlnxc'
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51NBuv7E3FORUG47UtxG0clh2I7ZagmkOdMDFTzf9e0sjSEMZA44OQPJllBgP6S1en6OEv1mOibfDX6XG5uHjNJrC00F6XKQqTX'
 
-FRONTEND_URL = 'http://localhost:8000'
+FRONTEND_URL = 'http://127.0.0.1:8000'
 
 
 

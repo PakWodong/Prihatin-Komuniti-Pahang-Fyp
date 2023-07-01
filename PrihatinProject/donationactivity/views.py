@@ -145,7 +145,7 @@ class VolunteerActivityView(APIView):# to use restful API class to get the data
 
         try:
             for image in images:
-                s3.delete_object(Bucket=bucket_name, Key=image.filename)
+                # s3.delete_object(Bucket=bucket_name, Key=image.filename)
                 image.delete()
         except (BotoCoreError, ClientError):
             return Response({'success': False, 'error': 'An Error Occured, Cannot connect to SW3 boston'})
@@ -181,11 +181,10 @@ class PictureView(APIView):
         bucket_name = settings.AWS_STORAGE_BUCKET_NAME
 
         try:
-            s3.delete_object(Bucket=bucket_name, Key=image_url)
+            # s3.delete_object(Bucket=bucket_name, Key=image_url)
+            image.delete()
         except (BotoCoreError, ClientError):
             return Response({'success': False, 'error': 'An Error Occured, Cannot connect to SW3 boston'})
-
-        image.delete()
         return Response({'success': True, 'message': 'Image updated successfully'})
 
 
