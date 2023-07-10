@@ -103,7 +103,6 @@ function DonationForm() {
                     donation_type: donationType,
                     purpose: purpose,
                 },
-                { withCredentials: true }
             );
             if (response.data.success) {
                 handleSuccess(response.data.message);

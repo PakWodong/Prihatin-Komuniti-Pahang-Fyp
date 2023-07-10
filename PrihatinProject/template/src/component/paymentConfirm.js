@@ -80,7 +80,7 @@ function PaymentConfirm() {
                     payment_method: {
                         fpx: fpxBankElement,
                     },
-                    return_url: `${process.env.REACT_APP_API_URL}donationtransaction/paymentFpx/?donorName=${donorName}&amount=${amount}&purpose=${purpose}`
+                    return_url: `${process.env.REACT_APP_API_URL}/donationtransaction/paymentFpx/?donorName=${donorName}&amount=${amount}&purpose=${purpose}`
                 });
             }
 

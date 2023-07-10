@@ -16,20 +16,23 @@ function RegisteredEvent() {
   };
 
   useEffect(() => {
-    {
-      setIsLoading(true);
-      const param = parseInt(localStorage.getItem('user_id'));
-      axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/VolunteerRegistered/${param}`)
-        .then(response => {
-          setEvents(response.data);
-        })
-        .catch(error => {
-          console.error(error);
-          handleError('An error occurred while fetching the data');
-        });
-      setIsLoading(false);
-    }
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const param = parseInt(localStorage.getItem('user_id'));
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/VolunteerRegistered/${param}`);
+        setEvents(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+        handleError('An error occurred while fetching the data');
+        setIsLoading(false);
+      }
+    };
+  
+    fetchData();
   }, []);
+  
 
   return (
     <div>

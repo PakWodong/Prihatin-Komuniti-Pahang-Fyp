@@ -44,69 +44,66 @@ function VolunteerView() {
 
 
     useEffect(() => {
-        setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`)
-            .then(response => response.json())
-            .then(data => {
-                // alert(JSON.stringify(data));
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
+                const data = await response.json();
                 setVolunteers(data);
-            })
-            .catch(error => {
+                setIsLoading(false);
+            } catch (error) {
                 console.error(error);
                 handleError('An error occurred while fetching the data');
-            });
-        setIsLoading(false);
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
     }, [sortKey, sortOrder]);
+
 
     const handleUpdate = (volunteer) => {
         navigate('/updateVolunteerEvent', { state: { volunteer } });
     };
 
-    const handleDelete = (id) => {
-        setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: id
-            })
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error(response.statusText);
-                }
-            })
-            .then(data => {
-                console.log(data)
-                if (data.success) {
-                    handleSuccess(data.message);
-                }
-                else {
-                    handleError(data.error);
-                }
-                fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        setIsLoading(false);
-                        // alert(JSON.stringify(data));
-                        setVolunteers(data);
-                    })
-                    .catch(error => {
-                        setIsLoading(false);
-                        console.error(error);
-                        handleError('An error occurred while fetching the data');
-                    });
-            })
-            .catch(error => {
-                setIsLoading(false);
-                console.error(error);
-                handleError('An error occurred while deleting the volunteer event');
+    const handleDelete = async (id) => {
+        try {
+            setIsLoading(true);
+
+            const deleteResponse = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                }),
             });
-    }
+
+            if (!deleteResponse.ok) {
+                throw new Error(deleteResponse.statusText);
+            }
+
+            const deleteData = await deleteResponse.json();
+
+            if (deleteData.success) {
+                handleSuccess(deleteData.message);
+            } else {
+                handleError(deleteData.error);
+            }
+
+            const fetchResponse = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
+            const data = await fetchResponse.json();
+
+            setIsLoading(false);
+            setVolunteers(data);
+        } catch (error) {
+            setIsLoading(false);
+            console.error(error);
+            handleError('An error occurred while deleting the volunteer event');
+        }
+    };
+
 
     const addVolunteerEvent = () => {
         navigate('/addEvent');

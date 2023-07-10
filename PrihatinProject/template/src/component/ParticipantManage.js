@@ -104,63 +104,63 @@ function ParticipantManage() {
     };
 
     useEffect(() => {
-        setIsLoading(true);
-        const param = parseInt(ActivityId);
-        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/ParticipantManage/${param}`)
-            .then(response => response.json())
-            .then(data => {
-                // alert(JSON.stringify(data));
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                const param = parseInt(ActivityId);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/ParticipantManage/${param}`);
+                const data = await response.json();
                 setParticipant(data);
-            })
-            .catch(error => {
+                setIsLoading(false);
+            } catch (error) {
+                console.error(error);
                 handleError('An error occurred while fetching the data');
-                console.error(error)
-            });
-        setIsLoading(false);
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
     }, [sortKey, sortOrder]);
 
-    const updateStatus = (id, status, email, reason) => {
-        setIsLoading(true);
-        const param = parseInt(ActivityId);
-        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`, {
+
+    const updateStatus = async (id, status, email, reason) => {
+        try {
+          setIsLoading(true);
+          const param = parseInt(ActivityId);
+      
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ id: id, status: status, email: email, reason: reason }),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    handleSuccess(data.message)
-                }
-                else {
-                    handleError(data.error)
-                }
-                fetch(`${process.env.REACT_APP_API_URL}/donationactivity/ParticipantManage/${param}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        setIsLoading(false);
-                        setParticipant(data);
-                        setCurrentPage(0);
-                    })
-                    .catch(error => {
-                        setIsLoading(false);
-                        console.error(error)
-                        handleError('An error occurred while fetching the data');
-                    });
-            }, [sortKey, sortOrder])
-            .catch(error => {
-                setIsLoading(false);
-                handleError('There was a problem updating the donation request status')
-                console.error('There was a problem updating the donation request status:', error);
-            });
-    };
+          });
+      
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+      
+          const data = await response.json();
+      
+          if (data.success) {
+            handleSuccess(data.message);
+          } else {
+            handleError(data.error);
+          }
+      
+          const participantResponse = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/ParticipantManage/${param}`);
+          const participantData = await participantResponse.json();
+      
+          setIsLoading(false);
+          setParticipant(participantData);
+          setCurrentPage(0);
+        } catch (error) {
+          setIsLoading(false);
+          handleError('There was a problem updating the donation request status');
+          console.error('There was a problem updating the donation request status:', error);
+        }
+      };
+      
 
     return (
         <div>

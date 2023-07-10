@@ -60,9 +60,7 @@ function AddVolunteerEvent() {
     }
   };
 
-
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!name) {
@@ -133,32 +131,32 @@ function AddVolunteerEvent() {
     formData.append('time_start', timeStart);
     formData.append('time_end', timeEnd);
     formData.append('venue', venue);
-    formData.append('status', "off");
+    formData.append('status', 'off');
 
     images.forEach((image, index) => {
       formData.append(`image_${index + 1}`, image);
     });
 
-    setIsLoading(true);
-    axios.post(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`, formData)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.success) {
-          handleSuccess(response.data.message);
-          setTimeout(() => {
-            window.location.href = '/VolunteerEvent';
-          }, 3000);
-        } else {
-          setIsLoading(false);
-          handleError(response.data.error);
-        }
-      })
-      .catch((error) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`, formData);
+      console.log(response.data);
+      if (response.data.success) {
+        handleSuccess(response.data.message);
+        setTimeout(() => {
+          window.location.href = '/VolunteerEvent';
+        }, 3000);
+      } else {
         setIsLoading(false);
-        console.log(error)
-        handleError('Something went wrong. Please try again');
-      });
+        handleError(response.data.error);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+      handleError('Something went wrong. Please try again');
+    }
   };
+
 
   const handleError = (error) => {
     toast.error(
@@ -189,10 +187,10 @@ function AddVolunteerEvent() {
   return (
     <div>
       {isLoading && (
-                <div className="loading-overlay">
-                    <div className="spinner"></div>
-                </div>
-            )}
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
       <div className="top">
         <div className="topInfo">
           <h2>Add Volunteer Event</h2>

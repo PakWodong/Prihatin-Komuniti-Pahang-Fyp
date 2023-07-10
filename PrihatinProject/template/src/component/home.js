@@ -34,27 +34,31 @@ function Home() {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-    const isAdmin = localStorage.getItem('isAdmin');
-    if (!accessToken) {
-      window.location.href = '/login';
-      return;
-    } else if (isAdmin === 'true') {
-      window.location.href = '/admin';
-      return;
-    } else {
-      axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`)
-        .then(response => {
+    const fetchData = async () => {
+      const accessToken = localStorage.getItem('access_token');
+      const isAdmin = localStorage.getItem('isAdmin');
+      if (!accessToken) {
+        window.location.href = '/login';
+        return;
+      } else if (isAdmin === 'true') {
+        window.location.href = '/admin';
+        return;
+      } else {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
           setEvents(response.data);
           setLoading(false);
-        })
-        .catch(error => {
+        } catch (error) {
           setLoading(false);
           console.error(error);
           handleError('An error occurred while fetching the data');
-        });
-    }
+        }
+      }
+    };
+
+    fetchData();
   }, []);
+
 
   const viewEvent = (event) => {
     navigate('/viewEvent', { state: { event } });

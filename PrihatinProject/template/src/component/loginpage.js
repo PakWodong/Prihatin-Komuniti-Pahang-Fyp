@@ -52,44 +52,47 @@ function LoginPage() {
     navigate('/DonationRequest');
   };
 
-  const handleSubmit = (event) => {  // to handle submit form when user login into the application
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    fetch(`${process.env.REACT_APP_API_URL}//login/`, { // send data to the django backend for authentication method
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({  //Json object that will send to backend
-        email: email,
-        password: password
-      })
-    })
-      .then(response => response.json())  //send the Json Response from backend
-      .then(data => {
-        if ('access' in data) {   //set the data from the backend into the local storage
-          localStorage.setItem('access_token', data.access);
-          localStorage.setItem('refresh_token', data.refresh);
-          localStorage.setItem('isAdmin', data.isAdmin);
-          localStorage.setItem('user_id', data.user_id);
-          localStorage.setItem('username', data.username);
-          localStorage.setItem('email', data.email);
-          if (data.isAdmin) { //send user to admin page if user is staff
-            window.location.href = '/admin';
-          } else {  //send user to community page if user is community
-            window.location.href = '/';
-          }
-        } else {
-          setIsLoading(false);
-          { handleLoginError(data.error) } // handle error from backend if email or password does not exist in system
-        }
-      })
-      .catch(error => {
-        setIsLoading(false);
-        handleLoginError('An error occured while login. Please try again') //handle error if cannot connect to the backend
-        console.error(error);
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}//login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
       });
+      const data = await response.json();
+  
+      if ('access' in data) {
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+        localStorage.setItem('isAdmin', data.isAdmin);
+        localStorage.setItem('user_id', data.user_id);
+        localStorage.setItem('username', data.username);
+        localStorage.setItem('email', data.email);
+  
+        if (data.isAdmin) {
+          window.location.href = '/admin';
+        } else {
+          window.location.href = '/';
+        }
+      } else {
+        setIsLoading(false);
+        handleLoginError(data.error);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      handleLoginError('An error occurred while logging in. Please try again.');
+      console.error(error);
+    }
   };
+  
 
   const handleLoginError = (error) => {
     toast.error(

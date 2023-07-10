@@ -99,7 +99,7 @@ function SignUpPage() {
         );
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         // Validate fields
@@ -165,49 +165,49 @@ function SignUpPage() {
             setConfirmPasswordError("Passwords do not match");
             errors = true;
         }
+
         if (!errors) {
             setIsLoading(true);
-            fetch(`${process.env.REACT_APP_API_URL}/register/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user: {
-                        email: email,
-                        username: name,
-                        password: password,
+
+            try {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/register/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
                     },
-                    contact_number: contactNumber,
-                    location: location,
-                    profession: profession,
-                })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(data => {
-                            {
-                                setIsLoading(false);
-                                handleLoginError(data.error)
-                            }
-                            throw new Error(response.statusText);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    { handleLoginSucess(data.message) }
-                    setTimeout(() => {
-                        window.location.href = '/login'; // Redirect to login page
-                    }, 5000);
-                })
-                .catch(error => {
-                    setIsLoading(false);
-                    console.error(error);
-                    //handleLoginError('An error occured while sign up. Please try again');
+                    body: JSON.stringify({
+                        user: {
+                            email: email,
+                            username: name,
+                            password: password,
+                        },
+                        contact_number: contactNumber,
+                        location: location,
+                        profession: profession,
+                    })
                 });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    setIsLoading(false);
+                    handleLoginError(data.error);
+                    throw new Error(response.statusText);
+                }
+
+                const data = await response.json();
+                handleLoginSucess(data.message);
+
+                setTimeout(() => {
+                    window.location.href = '/login'; // Redirect to login page
+                }, 5000);
+            } catch (error) {
+                setIsLoading(false);
+                console.error(error);
+                //handleLoginError('An error occurred while sign up. Please try again');
+            }
         }
     };
+
 
     return (
         <div style={{ backgroundColor: "#f0f0f0" }}>

@@ -94,60 +94,60 @@ function DonationView() {
     };
 
     useEffect(() => {
-        setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}/donation/request/`)
-            .then(response => response.json())
-            .then(data => setDonationRequests(data))
-            .catch(error => {
-                console.error(error)
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/donation/request/`);
+                const data = await response.json();
+                setDonationRequests(data);
+                setIsLoading(false);
+            } catch (error) {
+                console.error(error);
                 handleError('An error occurred while fetching the data');
-            });
-        setIsLoading(false);
+                setIsLoading(false);
+            }
+        };
+        fetchData();
     }, [sortKey, sortOrder]);
 
 
+    const updateStatus = async (id, status, email, reason) => {
+        try {
+            setIsLoading(true);
 
-    const updateStatus = (id, status, email, reason) => {
-        setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}/donation/request/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: id, status: status, email: email, reason: reason }),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    handleSuccess(data.message);
-                }
-                else {
-                    handleError(data.error);
-                }
-                fetch(`${process.env.REACT_APP_API_URL}//donation/request/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        setIsLoading(false);
-                        setDonationRequests(data);
-                        setCurrentPage(0);
-                    })
-                    .catch(error => {
-                        setIsLoading(false);
-                        console.error(error)
-                        handleError('An error occurred while fetching the data');
-                    });
-            }, [sortKey, sortOrder])
-            .catch(error => {
-                setIsLoading(false);
-                console.error(error);
-                handleError('An error occurred while updating the status');
+            const updateResponse = await fetch(`${process.env.REACT_APP_API_URL}/donation/request/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: id, status: status, email: email, reason: reason }),
             });
+
+            if (!updateResponse.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const updateData = await updateResponse.json();
+
+            if (updateData.success) {
+                handleSuccess(updateData.message);
+            } else {
+                handleError(updateData.error);
+            }
+
+            const fetchResponse = await fetch(`${process.env.REACT_APP_API_URL}/donation/request/`);
+            const data = await fetchResponse.json();
+
+            setIsLoading(false);
+            setDonationRequests(data);
+            setCurrentPage(0);
+        } catch (error) {
+            setIsLoading(false);
+            console.error(error);
+            handleError('An error occurred while updating the status');
+        }
     };
+
 
     const filteredRequests = donationRequests.filter((donationRequest) => donationRequest.status === 'Pending');
     const sortedRequests = filteredRequests.sort((a, b) => {

@@ -78,96 +78,101 @@ function DonateView() {
     const currentItems = sortedRequests.slice(offset, offset + itemsPerPage);
 
     useEffect(() => {
-        setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`)
-            .then(response => response.json())
-            .then(data => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`);
+                const data = await response.json();
+
                 let all = 0;
                 let donor = 0;
-                let recepient = 0;
-                setDonateRequests(data)
+                let recipient = 0;
+                setDonateRequests(data);
                 data.forEach(request => {
                     if (request.donation_type === 'donor') {
-                        donor = donor + parseFloat(request.amount);
+                        donor += parseFloat(request.amount);
                     } else if (request.donation_type === 'recipient') {
-                        recepient = recepient + parseFloat(request.amount);
+                        recipient += parseFloat(request.amount);
                     }
                 });
-                all = donor - recepient;
+                all = donor - recipient;
                 setNewDonor(donor);
                 setTotalMoney(all);
-                setNewRecepient(recepient);
+                setNewRecepient(recipient);
                 setIsLoading(false);
-            })
-            .catch(error => {
+            } catch (error) {
                 setIsLoading(false);
                 console.error(error);
                 handleError('An error occurred while fetching the data');
-            });
+            }
+        };
+
+        fetchData();
     }, [sortKey, sortOrder]);
 
-    const handleDelete = (id) => {
-        if ((selectedStatus == 'donor') && ((parseFloat(donorMoney) - parseFloat(selectedAmount)) < parseFloat(recepientMoney))) {
-            handleError('Cannot delete the donation transaction. Money received cannot exceed money spend.');
-            return;
-        }
-        setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: id
-            })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    handleSuccess(data.message);
-                }
-                else {
-                    handleError(data.error);
-                }
-                console.log('Donation request status updated successfully:', data);
-                fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        setIsLoading(false);
-                        setDonateRequests(data);
-                        let all = 0;
-                        let donor = 0;
-                        let recepient = 0;
-                        data.forEach(request => {
-                            if (request.donation_type == 'donor') {
-                                donor = donor + parseFloat(request.amount);
-                            } else if (request.donation_type == 'recipient') {
-                                recepient = recepient + parseFloat(request.amount);
-                            }
-                        });
-                        all = donor - recepient;
-                        setNewDonor(donor);
-                        setTotalMoney(all);
-                        setNewRecepient(recepient);
-                        setCurrentPage(0);
-                    })
-                    .catch(error => {
-                        setIsLoading(false);
-                        console.error(error);
-                        handleError('An error occurred while fetching the data');
-                    });
-            })
-            .catch(error => {
-                setIsLoading(false);
-                console.error(error);
-                handleError('An error occurred while deleting the donation transaction');
+
+    const handleDelete = async (id) => {
+        try {
+            if (selectedStatus === 'donor' && parseFloat(donorMoney) - parseFloat(selectedAmount) < parseFloat(recepientMoney)) {
+                handleError('Error in deleting the donation transaction. Total money left will become negative.');
+                return;
+            }
+
+            setIsLoading(true);
+
+            const deleteResponse = await fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                }),
             });
-    }
+
+            if (!deleteResponse.ok) {
+                throw new Error(deleteResponse.statusText);
+            }
+
+            const deleteData = await deleteResponse.json();
+
+            if (deleteData.success) {
+                handleSuccess(deleteData.message);
+            } else {
+                handleError(deleteData.error);
+            }
+
+            console.log('Donation request status updated successfully:', deleteData);
+
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`);
+            const data = await response.json();
+
+            let all = 0;
+            let donor = 0;
+            let recepient = 0;
+
+            data.forEach((request) => {
+                if (request.donation_type === 'donor') {
+                    donor = donor + parseFloat(request.amount);
+                } else if (request.donation_type === 'recipient') {
+                    recepient = recepient + parseFloat(request.amount);
+                }
+            });
+
+            all = donor - recepient;
+            setNewDonor(donor);
+            setTotalMoney(all);
+            setNewRecepient(recepient);
+            setCurrentPage(0);
+
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            console.error(error);
+            handleError('An error occurred while deleting the donation transaction');
+        }
+    };
+
 
     const addDonate = (totalmoney) => {
         navigate('/addDonate', { state: { totalmoney } });

@@ -144,8 +144,8 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
-
-CORS_ALLOWED_ORIGINS = [    "http://localhost:8000",    "http://127.0.0.1:8000",]
+CORS_ALLOWED_ORIGINS = [    "http://localhost:3000",    "http://127.0.0.1:3000",]
+# CORS_ALLOWED_ORIGINS = [    "http://localhost:8000",    "http://127.0.0.1:8000",]
 CORS_ALLOW_CREDENTIALS = True
 
 
@@ -176,10 +176,10 @@ AUTHENTICATION_BACKENDS = ['authentication.backend.EmailBackend']
 AUTH_USER_MODEL = 'authentication.Users'
 
 EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
-ANYMAIL = {
-    "MAILGUN_API_KEY": '01472a123ac40c2f545ef870d2a70ba6-102c75d8-6c6ee635',
-    "MAILGUN_SENDER_DOMAIN": 'sandbox431be23557a74a52b52f58f1f704b2fc.mailgun.org',
-}
+# ANYMAIL = {
+#     "MAILGUN_API_KEY": '01472a123ac40c2f545ef870d2a70ba6-102c75d8-6c6ee635',
+#     "MAILGUN_SENDER_DOMAIN": 'sandbox431be23557a74a52b52f58f1f704b2fc.mailgun.org',
+# }
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = 'AKIAX33ASPIMBOK2FL77'

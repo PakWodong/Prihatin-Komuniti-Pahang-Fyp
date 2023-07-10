@@ -50,7 +50,7 @@ function RegisterVolunteer() {
         );
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (!description) {
@@ -68,27 +68,27 @@ function RegisterVolunteer() {
             activity: volunteerid,
             user: userId
         };
-        setIsLoading(true);
-        axios.post(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`, data)
-            .then(response => {
-                console.log(response.data);
-                if (response.data.success) {
-                    handleSuccess(response.data.message);
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 3000);
-                }
-                else {
-                    setIsLoading(false);
-                    handleError(response.data.error);
-                }
-            })
-            .catch(error => {
+
+        try {
+            setIsLoading(true);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`, data);
+            console.log(response.data);
+            if (response.data.success) {
+                handleSuccess(response.data.message);
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 3000);
+            } else {
                 setIsLoading(false);
-                console.error(error);
-                handleError('Something went wrong. Please try again');
-            });
+                handleError(response.data.error);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.error(error);
+            handleError('Something went wrong. Please try again');
+        }
     };
+
 
     return (
         <div>

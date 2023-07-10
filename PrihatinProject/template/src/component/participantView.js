@@ -53,19 +53,22 @@ function ParticipantView() {
 
 
     useEffect(() => {
-        setIsLoading(true);
-        fetch(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`)
-            .then(response => response.json())
-            .then(data => {
-                // alert(JSON.stringify(data));
-                setVolunteers(data);
-            })
-            .catch(error => {
-                handleError('An error occurred while fetching the data');
-                console.error(error)
-            });
-        setIsLoading(false);
-    }, [sortKey, sortOrder]);
+        const fetchData = async () => {
+          try {
+            setIsLoading(true);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`);
+            const data = await response.json();
+            setVolunteers(data);
+            setIsLoading(false);
+          } catch (error) {
+            console.error(error);
+            handleError('An error occurred while fetching the data');
+            setIsLoading(false);
+          }
+        };
+        fetchData();
+      }, [sortKey, sortOrder]);
+      
 
     const handleUpdate = (id) => {
         navigate('/participantManage', { state: { id } });

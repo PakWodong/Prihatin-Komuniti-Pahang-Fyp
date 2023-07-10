@@ -20,26 +20,25 @@ function ViewEvent() {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        // Access the volunteer object and set the form fields accordingly
-        {
-            //get the user ID from local storage
+        const fetchData = async () => {
+          try {
             setIsLoading(true);
             const param = parseInt(localStorage.getItem('user_id'));
-            //get the volunteer activity for registered event
-            axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/VolunteerRegistered/${param}`)
-                .then(response => {
-                    const Registered = response.data.find(obj => obj.id === volunteer.id);
-                    if (Registered) {
-                        setIsRegistered(true);
-                        setEvents(Registered)
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                    handleError('An error occurred while fetching the data');
-                });
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/VolunteerRegistered/${param}`);
+            const Registered = response.data.find(obj => obj.id === volunteer.id);
+            if (Registered) {
+              setIsRegistered(true);
+              setEvents(Registered);
+            }
             setIsLoading(false);
-        }
+          } catch (error) {
+            console.error(error);
+            handleError('An error occurred while fetching the data');
+            setIsLoading(false);
+          }
+        };
+      
+        fetchData();
         setName(volunteer.name);
         setDescription(volunteer.description);
         setStartDate(volunteer.start_date);
@@ -48,7 +47,8 @@ function ViewEvent() {
         setTimeStart(volunteer.time_start);
         setVenue(volunteer.venue);
         setImages(volunteer.image_urls);
-    }, [volunteer]);
+      }, [volunteer]);
+      
 
     const RegisterEvent = (volunteerid) => {
         navigate('/registerVolunteer', { state: { volunteerid } });
