@@ -161,8 +161,8 @@ function Admin() {
           }
         }
       } catch (error) {
-        console.error(error);
-        // handleError('An error occurred while fetching the data');
+        setIsLoading(false);
+        //handleError('An error occurred while fetching the data. Please try again');
       }
     };
     fetchData();

@@ -66,7 +66,6 @@ function ForgotPasswordForm() {
     } catch (error) {
       setIsLoading(false);
       handleLoginError('An error occured while sending the reset password link to your email. Please try again')
-      console.error(error);
     }
   };
 

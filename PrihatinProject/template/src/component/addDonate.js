@@ -66,7 +66,7 @@ function DonationForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (!amount || parseFloat(amount) <= 0) {
+        if (!/^\d+(\.\d{1,2})?$/.test(amount)||!amount || parseFloat(amount) <= 0) {
             setAmountError('Please enter a valid amount.');
             return;
         } else {

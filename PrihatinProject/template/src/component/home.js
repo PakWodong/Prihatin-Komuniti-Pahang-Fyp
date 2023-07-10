@@ -50,7 +50,6 @@ function Home() {
           setLoading(false);
         } catch (error) {
           setLoading(false);
-          console.error(error);
           handleError('An error occurred while fetching the data');
         }
       }

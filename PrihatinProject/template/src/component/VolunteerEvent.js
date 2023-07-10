@@ -52,7 +52,6 @@ function VolunteerView() {
                 setVolunteers(data);
                 setIsLoading(false);
             } catch (error) {
-                console.error(error);
                 handleError('An error occurred while fetching the data');
                 setIsLoading(false);
             }
@@ -99,7 +98,6 @@ function VolunteerView() {
             setVolunteers(data);
         } catch (error) {
             setIsLoading(false);
-            console.error(error);
             handleError('An error occurred while deleting the volunteer event');
         }
     };
@@ -171,8 +169,8 @@ function VolunteerView() {
                             <th>ID</th>
                             <th>Volunteer Event Name <FontAwesomeIcon icon={faSort} onClick={() => handleSort("name")} /></th>
                             <th>Volunteer Participation <FontAwesomeIcon icon={faSort} onClick={() => handleSort("email")} /></th>
-                            <th>Start Date <FontAwesomeIcon icon={faSort} onClick={() => handleSort("start_date")} /></th>
-                            <th>End Date <FontAwesomeIcon icon={faSort} onClick={() => handleSort("end_date")} /></th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                             <th>Status <FontAwesomeIcon icon={faSort} onClick={() => handleSort("status")} /></th>
                             <th>Edit</th>
                             <th>Delete</th>

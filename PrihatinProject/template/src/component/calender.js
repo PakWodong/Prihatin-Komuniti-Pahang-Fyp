@@ -25,23 +25,22 @@ function Calendar() {
             }
         );
     };
-    
+
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            setIsLoading(true);
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
-            setEvents(response.data);
-            setIsLoading(false);
-          } catch (error) {
-            setIsLoading(false);
-            console.error(error);
-            handleError('An error occurred while fetching the data');
-          }
+            try {
+                setIsLoading(true);
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
+                setEvents(response.data);
+                setIsLoading(false);
+            } catch (error) {
+                setIsLoading(false);
+                handleError('An error occurred while fetching the data. Please try again');
+            }
         };
         fetchData();
-      }, []);
-      
+    }, []);
+
 
     return (
         <div>

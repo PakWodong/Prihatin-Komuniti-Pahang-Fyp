@@ -32,7 +32,6 @@ function ViewEvent() {
             }
             setIsLoading(false);
           } catch (error) {
-            console.error(error);
             handleError('An error occurred while fetching the data');
             setIsLoading(false);
           }

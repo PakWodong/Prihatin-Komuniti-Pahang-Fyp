@@ -202,7 +202,6 @@ function SignUpPage() {
                 }, 5000);
             } catch (error) {
                 setIsLoading(false);
-                console.error(error);
                 //handleLoginError('An error occurred while sign up. Please try again');
             }
         }

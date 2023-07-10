@@ -84,7 +84,6 @@ function RegisterVolunteer() {
             }
         } catch (error) {
             setIsLoading(false);
-            console.error(error);
             handleError('Something went wrong. Please try again');
         }
     };

@@ -86,7 +86,6 @@ function PaymentConfirm() {
 
         } catch (error) {
             handleError("An error occurred while processing the payment.");
-            console.error(error);
         }
 
         setIsLoading(false);

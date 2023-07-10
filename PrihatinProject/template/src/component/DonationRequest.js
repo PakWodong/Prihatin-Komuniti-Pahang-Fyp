@@ -80,7 +80,6 @@ function DonationRequest() {
         } catch (error) {
             setIsLoading(false);
             handleLoginError('An error occured while request the donation. Please try again');
-            console.error(error);
         }
     };
 

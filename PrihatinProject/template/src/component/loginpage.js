@@ -89,7 +89,6 @@ function LoginPage() {
     } catch (error) {
       setIsLoading(false);
       handleLoginError('An error occurred while logging in. Please try again.');
-      console.error(error);
     }
   };
   

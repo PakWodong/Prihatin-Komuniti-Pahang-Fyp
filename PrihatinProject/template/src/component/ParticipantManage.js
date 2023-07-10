@@ -113,7 +113,6 @@ function ParticipantManage() {
                 setParticipant(data);
                 setIsLoading(false);
             } catch (error) {
-                console.error(error);
                 handleError('An error occurred while fetching the data');
                 setIsLoading(false);
             }
@@ -157,7 +156,6 @@ function ParticipantManage() {
         } catch (error) {
           setIsLoading(false);
           handleError('There was a problem updating the donation request status');
-          console.error('There was a problem updating the donation request status:', error);
         }
       };
       
@@ -183,7 +181,7 @@ function ParticipantManage() {
                             <th>ID</th>
                             <th>Name <FontAwesomeIcon icon={faSort} onClick={() => handleSort("name")} /></th>
                             <th>Email <FontAwesomeIcon icon={faSort} onClick={() => handleSort("email")} /></th>
-                            <th>Date <FontAwesomeIcon icon={faSort} onClick={() => handleSort("date")} /></th>
+                            <th>Date</th>
                             <th>Status</th>
                             <th style={{ textAlign: 'center' }}>More info</th>
                             <th>Action</th>

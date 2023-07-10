@@ -98,7 +98,6 @@ function ResetPassword() {
     } catch (error) {
       setIsLoading(false);
       handleLoginError('An error occured while reset your password. Please try again')
-      console.error(error);
     }
   };
 

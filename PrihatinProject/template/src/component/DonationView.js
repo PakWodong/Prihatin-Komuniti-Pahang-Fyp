@@ -102,7 +102,6 @@ function DonationView() {
                 setDonationRequests(data);
                 setIsLoading(false);
             } catch (error) {
-                console.error(error);
                 handleError('An error occurred while fetching the data');
                 setIsLoading(false);
             }
@@ -184,7 +183,7 @@ function DonationView() {
                             <th>ID</th>
                             <th>Name <FontAwesomeIcon icon={faSort} onClick={() => handleSort("name")} /></th>  {/* Sort by Name  */}
                             <th>Email <FontAwesomeIcon icon={faSort} onClick={() => handleSort("email")} /></th> {/*Sort by email  */}
-                            <th>Date <FontAwesomeIcon icon={faSort} onClick={() => handleSort("date")} /></th> {/*Sort by date  */}
+                            <th>Date</th> 
                             <th>Status</th>
                             <th style={{ textAlign: 'center' }}>More info</th>
                             <th>Action</th>

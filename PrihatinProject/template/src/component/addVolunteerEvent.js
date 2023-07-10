@@ -152,7 +152,6 @@ function AddVolunteerEvent() {
       }
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
       handleError('Something went wrong. Please try again');
     }
   };

@@ -86,14 +86,12 @@ function PaymentInfo() {
             } else {
                 setIsLoading(false);
                 handleError('Payment creation failed. Please try again')
-                console.log('Payment creation failed.');
             }
 
         }
         catch (error) {
             setIsLoading(false);
             handleError('Error occurred while processing the payment')
-            console.error('Error occurred while processing the payment:');
         }
     };
 

@@ -102,8 +102,7 @@ function DonateView() {
                 setIsLoading(false);
             } catch (error) {
                 setIsLoading(false);
-                console.error(error);
-                handleError('An error occurred while fetching the data');
+                handleError('An error occurred while fetching the data. Please try again');
             }
         };
 
@@ -229,9 +228,9 @@ function DonateView() {
                         <tr>
                             <th>ID</th>
                             <th>Donor Name <FontAwesomeIcon icon={faSort} onClick={() => handleSort("donor_name")} /></th>
-                            <th>Date <FontAwesomeIcon icon={faSort} onClick={() => handleSort("donation_date")} /></th>
                             <th>Purpose<FontAwesomeIcon icon={faSort} onClick={() => handleSort("purpose")} /></th>
                             <th>Type<FontAwesomeIcon icon={faSort} onClick={() => handleSort("donation_type")} /></th>
+                            <th>Date</th>
                             {/* <th>Amount <FontAwesomeIcon icon={faSort} onClick={() => handleSort("amount")} /></th> */}
                             <th>Amount</th>
                             <th>Delete</th>
@@ -243,7 +242,6 @@ function DonateView() {
                                 <tr key={donateRequest.id}>
                                     <td>{++index}</td>
                                     <td>{donateRequest.donor_name}</td>
-                                    <td>{formatDate(donateRequest.donation_date)}</td>
                                     <td>{donateRequest.purpose}</td>
                                     <td>
                                         <button
@@ -252,7 +250,7 @@ function DonateView() {
                                             {donateRequest.donation_type}
                                         </button>
                                     </td>
-
+                                    <td>{formatDate(donateRequest.donation_date)}</td>
                                     <td>RM {donateRequest.amount}</td>
                                     <td>
                                         <button style={{
