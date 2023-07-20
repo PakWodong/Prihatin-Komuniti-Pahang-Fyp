@@ -88,7 +88,7 @@ function DonateView() {
                 let donor = 0;
                 let recipient = 0;
                 setDonateRequests(data);
-                data.forEach(request => {
+                data?.forEach(request => {
                     if (request.donation_type === 'donor') {
                         donor += parseFloat(request.amount);
                     } else if (request.donation_type === 'recipient') {
@@ -101,9 +101,14 @@ function DonateView() {
                 setNewRecepient(recipient);
                 setIsLoading(false);
             } catch (error) {
-                setIsLoading(false);
-                handleError('An error occurred while fetching the data. Please try again');
+                setIsLoading(true);
+                retryFetchData();
+                // handleError('An error occurred while fetching the data. Please try again');
             }
+        };
+
+        const retryFetchData = () => {
+            setTimeout(fetchData, 3000);
         };
 
         fetchData();
@@ -140,17 +145,25 @@ function DonateView() {
             } else {
                 handleError(deleteData.error);
             }
+            await retryFetchData();
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(true);
+            console.error(error);
+            //handleError('An error occurred while deleting the donation transaction');
+        }
+    };
 
-            console.log('Donation request status updated successfully:', deleteData);
-
+    const retryFetchData = async () => {
+        try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/donationtransaction/add/`);
             const data = await response.json();
 
             let all = 0;
             let donor = 0;
             let recepient = 0;
-
-            data.forEach((request) => {
+            setDonateRequests(data);
+            data?.forEach((request) => {
                 if (request.donation_type === 'donor') {
                     donor = donor + parseFloat(request.amount);
                 } else if (request.donation_type === 'recipient') {
@@ -164,14 +177,13 @@ function DonateView() {
             setNewRecepient(recepient);
             setCurrentPage(0);
 
-            setIsLoading(false);
         } catch (error) {
-            setIsLoading(false);
+            setIsLoading(true);
+            retryFetchData();
             console.error(error);
-            handleError('An error occurred while deleting the donation transaction');
+            // handleError('An error occurred while fetching the donation data');
         }
     };
-
 
     const addDonate = (totalmoney) => {
         navigate('/addDonate', { state: { totalmoney } });

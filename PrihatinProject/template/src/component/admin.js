@@ -44,7 +44,7 @@ function Admin() {
         let newCount = 0;
         let approvedCount = 0;
         let rejectedCount = 0;
-        data1.forEach(request => {
+        data1?.forEach(request => {
           if (request.status === 'Pending') {
             newCount++;
           } else if (request.status === 'Approved') {
@@ -62,14 +62,13 @@ function Admin() {
         let all = 0;
         let donor = 0;
         let recepient = 0;
-        data2.forEach(request => {
+        data2?.forEach(request => {
           if (request.donation_type === 'donor') {
             donor = donor + parseFloat(request.amount);
           } else if (request.donation_type === 'recipient') {
             recepient = recepient + parseFloat(request.amount);
           }
         });
-        setIsLoading(false);
         all = donor - recepient;
         setNewDonor(donor);
         setTotalMoney(all);
@@ -104,7 +103,7 @@ function Admin() {
           });
         }
         setLastSevenDays(lastSevenDays);
-
+        setIsLoading(false);
         if (chartContainerRef.current && lastSevenDays.length > 0) {
           const labels = lastSevenDays.map((day) => day.date);
           const data = lastSevenDays.map((day) => day.totalMoney);
@@ -161,9 +160,13 @@ function Admin() {
           }
         }
       } catch (error) {
-        setIsLoading(false);
+        setIsLoading(true);
+        retryFetchData();
         //handleError('An error occurred while fetching the data. Please try again');
       }
+    };
+    const retryFetchData = () => {
+      setTimeout(fetchData, 3000);
     };
     fetchData();
   }, []);

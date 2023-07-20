@@ -21,17 +21,20 @@ function RegisteredEvent() {
         setIsLoading(true);
         const param = parseInt(localStorage.getItem('user_id'));
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/VolunteerRegistered/${param}`);
-        setEvents(response.data);
+        setEvents(response?.data);
         setIsLoading(false);
       } catch (error) {
-        handleError('An error occurred while fetching the data');
-        setIsLoading(false);
+        setIsLoading(true);
+        retryFetchData();
+        //handleError('An error occurred while fetching the data');
       }
     };
-  
+    const retryFetchData = () => {
+      setTimeout(fetchData, 3000);
+    };
     fetchData();
   }, []);
-  
+
 
   return (
     <div>

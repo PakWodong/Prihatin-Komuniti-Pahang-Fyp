@@ -98,7 +98,7 @@ function RegisterVolunteer() {
             )}
             <div className="top">
                 <div className="topInfo">
-                    <h2 >Add Donation Transaction Page</h2>
+                    <h2 >Register As Volunteer Page</h2>
                     <div className="Prihatin">
                         | {localStorage.getItem('username')}
                     </div>

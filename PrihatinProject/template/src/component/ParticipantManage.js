@@ -109,56 +109,68 @@ function ParticipantManage() {
                 setIsLoading(true);
                 const param = parseInt(ActivityId);
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/ParticipantManage/${param}`);
-                const data = await response.json();
+                const data = await response?.json();
                 setParticipant(data);
                 setIsLoading(false);
             } catch (error) {
-                handleError('An error occurred while fetching the data');
-                setIsLoading(false);
+                setIsLoading(true);
+                retryFetchData();
+                // handleError('An error occurred while fetching the data');
             }
         };
-
+        const retryFetchData = () => {
+            setTimeout(fetchData, 3000);
+        };
         fetchData();
     }, [sortKey, sortOrder]);
 
 
     const updateStatus = async (id, status, email, reason) => {
         try {
-          setIsLoading(true);
-          const param = parseInt(ActivityId);
-      
-          const response = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: id, status: status, email: email, reason: reason }),
-          });
-      
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-      
-          const data = await response.json();
-      
-          if (data.success) {
-            handleSuccess(data.message);
-          } else {
-            handleError(data.error);
-          }
-      
-          const participantResponse = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/ParticipantManage/${param}`);
-          const participantData = await participantResponse.json();
-      
-          setIsLoading(false);
-          setParticipant(participantData);
-          setCurrentPage(0);
+            setIsLoading(true);
+
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: id, status: status, email: email, reason: reason }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                handleSuccess(data.message);
+            } else {
+                handleError(data.error);
+            }
+            await retryFetchData();
+            setIsLoading(false);
         } catch (error) {
-          setIsLoading(false);
-          handleError('There was a problem updating the donation request status');
+            setIsLoading(true);
+            //handleError('There was a problem updating the donation request status');
         }
-      };
-      
+    };
+    const retryFetchData = async () => {
+        try {
+            const param = parseInt(ActivityId);
+            const participantResponse = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/ParticipantManage/${param}`);
+            const participantData = await participantResponse?.json();
+            setParticipant(participantData);
+            setCurrentPage(0);
+
+        } catch (error) {
+            setIsLoading(true);
+            retryFetchData();
+            console.error(error);
+            //handleError('There was a problem updating the donation request status');
+        }
+    };
+
 
     return (
         <div>

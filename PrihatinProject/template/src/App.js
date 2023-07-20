@@ -48,10 +48,10 @@ function App() {
         <Route path="/Donate" element={<DonateView />} />  {/*Donation transaction view page for staff to see and delete*/}
         <Route path="/paymentConfirm"element={<PaymentConfirm/>}/> {/*Payment page for user to select FPX or card bank*/}
         <Route path="/paymentInfo"element={<PaymentInfo/>}/> {/*Payment Information page for user*/}
-        <Route path="/donationtransaction/paymentFpx/WanLuqman08.pythonanywhere.com/paymentSuccessfull"element={<PaymentSuccessfull/>}/> {/*Payment Successfull page for user*/}
-        <Route path="/donationtransaction/paymentFpx/WanLuqman08.pythonanywhere.com/paymentFailed"element={<PaymentFailed/>}/> {/*Payment Failed page for user*/}
-        {/* <Route path="/paymentSuccessfull"element={<PaymentSuccessfull/>}/> 
-        <Route path="/paymentFailed"element={<PaymentFailed/>}/>  */}
+        {/* <Route path="/donationtransaction/paymentFpx/WanLuqman08.pythonanywhere.com/paymentSuccessfull"element={<PaymentSuccessfull/>}/>
+        <Route path="/donationtransaction/paymentFpx/WanLuqman08.pythonanywhere.com/paymentFailed"element={<PaymentFailed/>}/>  */}
+        <Route path="/paymentSuccessfull"element={<PaymentSuccessfull/>}/> 
+        <Route path="/paymentFailed"element={<PaymentFailed/>}/> 
         <Route path="/addEvent" element={<AddVolunteerEvent />} />{/*Add New Volunteer activity for staff*/}
         <Route path="/VolunteerEvent" element={<VolunteerView />} /> {/*View Volunteer activity for staff*/}
         <Route path="/UpdateVolunteerEvent" element={<UpdateVolunteerEvent />} />{/*Update Volunteer activity for staff*/}

@@ -98,13 +98,16 @@ function DonationView() {
             try {
                 setIsLoading(true);
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/donation/request/`);
-                const data = await response.json();
+                const data = await response?.json();
                 setDonationRequests(data);
                 setIsLoading(false);
             } catch (error) {
-                handleError('An error occurred while fetching the data');
-                setIsLoading(false);
+                setIsLoading(true);
+                retryFetchData();
             }
+        };
+        const retryFetchData = () => {
+            setTimeout(fetchData, 3000);
         };
         fetchData();
     }, [sortKey, sortOrder]);
@@ -133,17 +136,25 @@ function DonationView() {
             } else {
                 handleError(updateData.error);
             }
-
-            const fetchResponse = await fetch(`${process.env.REACT_APP_API_URL}/donation/request/`);
-            const data = await fetchResponse.json();
-
+            await retryFetchData();
             setIsLoading(false);
+        } catch (error) {
+            setIsLoading(true);
+            console.error(error);
+        }
+    };
+
+    const retryFetchData = async () => {
+        try {
+            const fetchResponse = await fetch(`${process.env.REACT_APP_API_URL}/donation/request/`);
+            const data = await fetchResponse?.json();
             setDonationRequests(data);
             setCurrentPage(0);
         } catch (error) {
-            setIsLoading(false);
+            setIsLoading(true);
+            retryFetchData();
             console.error(error);
-            handleError('An error occurred while updating the status');
+            //handleError('An error occurred while fetching the donation data');
         }
     };
 
@@ -183,7 +194,7 @@ function DonationView() {
                             <th>ID</th>
                             <th>Name <FontAwesomeIcon icon={faSort} onClick={() => handleSort("name")} /></th>  {/* Sort by Name  */}
                             <th>Email <FontAwesomeIcon icon={faSort} onClick={() => handleSort("email")} /></th> {/*Sort by email  */}
-                            <th>Date</th> 
+                            <th>Date</th>
                             <th>Status</th>
                             <th style={{ textAlign: 'center' }}>More info</th>
                             <th>Action</th>

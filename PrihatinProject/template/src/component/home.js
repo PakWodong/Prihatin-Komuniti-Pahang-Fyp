@@ -46,15 +46,18 @@ function Home() {
       } else {
         try {
           const response = await axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
-          setEvents(response.data);
+          setEvents(response?.data);
           setLoading(false);
         } catch (error) {
-          setLoading(false);
-          handleError('An error occurred while fetching the data');
+          setLoading(true);
+          retryFetchData();
+          //handleError('An error occurred while fetching the data');
         }
       }
     };
-
+    const retryFetchData = () => {
+      setTimeout(fetchData, 3000);
+    };
     fetchData();
   }, []);
 

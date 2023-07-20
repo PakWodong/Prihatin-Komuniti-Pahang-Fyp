@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && copy build\\favicon.ico build\\static\\favicon.ico",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

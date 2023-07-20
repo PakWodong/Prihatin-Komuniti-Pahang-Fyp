@@ -57,14 +57,19 @@ function ParticipantView() {
           try {
             setIsLoading(true);
             const response = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/volunteerParticipant/`);
-            const data = await response.json();
+            const data = await response?.json();
             setVolunteers(data);
             setIsLoading(false);
           } catch (error) {
-            handleError('An error occurred while fetching the data');
-            setIsLoading(false);
+            setIsLoading(true);
+            retryFetchData();
+            //handleError('An error occurred while fetching the data');
           }
         };
+        const retryFetchData = () => {
+            setTimeout(fetchData, 3000);
+        };
+
         fetchData();
       }, [sortKey, sortOrder]);
       

@@ -47,6 +47,7 @@ function PaymentConfirm() {
                 if (error) { // if payment not successfull
                     handleError(error.message); //display error message
                     setTimeout(() => { // send to payment Failed page
+                        // navigate('/donationtransaction/paymentFpx/WanLuqman08.pythonanywhere.com/paymentFailed', {
                         navigate('/paymentFailed', {
                             state: {
                                 donar_name: donorName,
@@ -65,6 +66,7 @@ function PaymentConfirm() {
                     })
                     handleSuccess("Payment succeeded!");// display payment success message
                     setTimeout(() => {
+                        // navigate('/donationtransaction/paymentFpx/WanLuqman08.pythonanywhere.com/paymentSuccessfull', {
                         navigate('/paymentSuccessfull', {
                             state: {
                                 donar_name: donorName,

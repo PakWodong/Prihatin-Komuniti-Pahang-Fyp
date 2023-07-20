@@ -48,13 +48,17 @@ function VolunteerView() {
             try {
                 setIsLoading(true);
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
-                const data = await response.json();
+                const data = await response?.json();
                 setVolunteers(data);
                 setIsLoading(false);
             } catch (error) {
-                handleError('An error occurred while fetching the data');
-                setIsLoading(false);
+                setIsLoading(true);
+                retryFetchData();
+                //handleError('An error occurred while fetching the data');
             }
+        };
+        const retryFetchData = () => {
+            setTimeout(fetchData, 3000);
         };
 
         fetchData();
@@ -90,15 +94,24 @@ function VolunteerView() {
             } else {
                 handleError(deleteData.error);
             }
-
-            const fetchResponse = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
-            const data = await fetchResponse.json();
-
+            await retryFetchData();
             setIsLoading(false);
+        } catch (error) {
+            setIsLoading(true);
+            //handleError('An error occurred while deleting the volunteer event');
+        }
+    };
+
+    const retryFetchData = async () => {
+        try {
+            const fetchResponse = await fetch(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
+            const data = await fetchResponse?.json();
             setVolunteers(data);
         } catch (error) {
-            setIsLoading(false);
-            handleError('An error occurred while deleting the volunteer event');
+            setIsLoading(true);
+            retryFetchData();
+            console.error(error);
+            // handleError('An error occurred while fetching the donation data');
         }
     };
 

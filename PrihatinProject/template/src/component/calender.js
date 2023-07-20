@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const localizer = momentLocalizer(moment);
 
 function Calendar() {
-    const [events, setEvents] = useState([]);
+    const [eventss, setEvents] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleError = (error) => {
@@ -31,12 +31,16 @@ function Calendar() {
             try {
                 setIsLoading(true);
                 const response = await axios.get(`${process.env.REACT_APP_API_URL}/donationactivity/addEvent/`);
-                setEvents(response.data);
+                setEvents(response?.data);
                 setIsLoading(false);
             } catch (error) {
-                setIsLoading(false);
-                handleError('An error occurred while fetching the data. Please try again');
+                setIsLoading(true);
+                retryFetchData();
+                //handleError('An error occurred while fetching the data. Please try again');
             }
+        };
+        const retryFetchData = () => {
+            setTimeout(fetchData, 3000); 
         };
         fetchData();
     }, []);
@@ -59,7 +63,7 @@ function Calendar() {
                 <div className="calendar">
                     <BigCalendar
                         localizer={localizer}
-                        events={events.map((event) => ({
+                        events={eventss.map((event) => ({
                             title: event.name,
                             start: moment(`${event.start_date} ${event.time_start}`).toDate(),
                             end: moment(`${event.end_date} ${event.time_end}`).toDate(),
