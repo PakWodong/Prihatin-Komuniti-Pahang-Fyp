@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^%#wsw$r)#@u5et=7p-0fy=y6yt9xyyo+m_u1*3g)m=^z2fjf&'
+SECRET_KEY = 'Need to hide for security purpose. If needed, can roger me'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -176,15 +176,25 @@ AUTHENTICATION_BACKENDS = ['authentication.backend.EmailBackend']
 AUTH_USER_MODEL = 'authentication.Users'
 
 EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+# ANYMAIL = {
+#     "MAILGUN_API_KEY": '',
+#     "MAILGUN_SENDER_DOMAIN": '',
+# }
+
+ANYMAIL = {
+    "MAILGUN_API_KEY": 'Need to hide for security purpose. If needed, can roger me',
+    "MAILGUN_SENDER_DOMAIN": 'Need to hide for security purpose. If needed, can roger me',
+}
+
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = 'AKIAX33ASPIMBOK2FL77'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = 'Need to hide for security purpose. If needed, can roger me'
+AWS_SECRET_ACCESS_KEY = 'Need to hide for security purpose. If needed, can roger me'
 AWS_STORAGE_BUCKET_NAME = 'prihatinpicture'
 STATICFILES_STORAGE = 'PrihatinProject.static_storage.S3StaticStorage'
 
-STRIPE_SECRET_KEY = 'sk_test_51NBuv7E3FORUG47UXy7uwmOYBABX2WvSgzSkjgPQG5crgH9IRnnsLxWo0Wyui0pL3GwlePfFk05pn8JsPM0WfLSv001EcJlnxc'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51NBuv7E3FORUG47UtxG0clh2I7ZagmkOdMDFTzf9e0sjSEMZA44OQPJllBgP6S1en6OEv1mOibfDX6XG5uHjNJrC00F6XKQqTX'
+STRIPE_SECRET_KEY = 'Need to hide for security purpose. If needed, can roger me'
+STRIPE_PUBLISHABLE_KEY = 'Need to hide for security purpose. If needed, can roger me'
 
 FRONTEND_URL = 'http://127.0.0.1:8000'
 
